@@ -140,7 +140,7 @@ def partialSelectionSort(arr, k):
                 temp = arr[i]
                 arr[i] = arr[minIndex]
                 arr[minIndex] = temp
-    print(arr)
+    #print(arr)
     elapsed_time = time.perf_counter() - start_time
     return elapsed_time
 
@@ -195,34 +195,44 @@ def generateInputRandom(n):
 
     return list(randnums)
 
+def saveArray(input_array):
+    arr_list = []
+    arr_array = input_array.copy()
+
+    i=0
+    #for seven algorithms saved array for each of them
+    for i in range(7):
+        arr_list.append(arr_array)
+
+    print(len(arr_list))
+    return arr_list
+
 
 def main():
     k = 3
     #input_array = [12, 11, 13, 6, 4, 2, 19]
     input_array = generateInputRandom(10)
-
-    # save the array
-    arr_quickselect = input_array.copy()
-    arr_insertionsort = input_array.copy()
-    arr_mergesort = input_array.copy()
-    arr_psSort = input_array.copy()
-    arr_quickSort = input_array.copy()
-
     n = len(input_array)
-    time0 = quickSort(arr_quickSort, 0, n - 1)
-    print(arr_quickselect)
-    time1 = insertionSort(arr_insertionsort)
-    time2 = mergeSort(arr_mergesort)
-    time3 = partialSelectionSort(arr_psSort, k)
-    start_time = time.perf_counter()
-    time4 = quickSelect(arr_quickselect, 0, n - 1, k)
-    time4 = time.perf_counter() - start_time
+    # save the array
+    sortArrayList = saveArray(input_array)
 
-    printKthElement(arr_quickSort, k)
-    printKthElement(arr_insertionsort, k)
-    printKthElement(arr_mergesort, k)
-    printKthElement(arr_psSort, k)
-    printKthElement(arr_quickselect, k)
+
+    time0 = quickSort(sortArrayList[0], 0, n - 1)
+    printKthElement(sortArrayList[0], k)
+
+    time1 = insertionSort(sortArrayList[1])
+    printKthElement(sortArrayList[1], k)
+
+    time2 = mergeSort(sortArrayList[2])
+    printKthElement(sortArrayList[2], k)
+
+    time3 = partialSelectionSort(sortArrayList[3], k)
+    printKthElement(sortArrayList[3], k)
+
+    start_time = time.perf_counter()
+    time4 = quickSelect(sortArrayList[4], 0, n - 1, k)
+    time4 = time.perf_counter() - start_time
+    printKthElement(sortArrayList[4], k)
 
     print(f"Elapsed time quickSort: {time0:0.9f} seconds")
     print(f"Elapsed time insertionSort: {time1:0.9f} seconds")
