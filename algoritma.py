@@ -159,7 +159,6 @@ def partialSelectionSort(arr, k):
 def quickSelect(arr, l, r, k):
     # if k is smaller than number of
     # elements in array
-    start_time = time.perf_counter()
     if (k > 0 and k <= r - l + 1):
 
         # Partition the array around last
@@ -180,20 +179,11 @@ def quickSelect(arr, l, r, k):
         return quickSelect(arr, index + 1, r,
                            k - index + l - 1)
     print("Index out of bound")
-    elapsed_time = time.perf_counter() - start_time
-    return elapsed_time
 
 
 def printKthElement(arr, k):
     print(arr[k - 1])
 
-
-# do not consider best or worst cases, just a random input for now
-def generateInputRandom(n):
-    randnums = np.random.randint(1, 1001, n)
-    print(randnums)
-
-    return list(randnums)
 
 def saveArray(input_array):
     arr_list = []
@@ -207,38 +197,71 @@ def saveArray(input_array):
     print(len(arr_list))
     return arr_list
 
+def plot_nvstime(timeList,nlist):
+    pass
+
+
+
+# do not consider best or worst cases, just a random input for now
+def generateInputRandom(n):
+    randnums = np.random.randint(1, 1001, n)
+    #print(randnums)
+
+    return list(randnums)
+
+def inputsInt():
+    inputs = []
+    i = 0
+    n = 10
+    for i in range(3):
+        input_array = generateInputRandom(n)
+        inputs.append(input_array)
+        n = n * 10
+
+    return inputs
 
 def main():
     k = 3
     #input_array = [12, 11, 13, 6, 4, 2, 19]
-    input_array = generateInputRandom(10)
-    n = len(input_array)
-    # save the array
-    sortArrayList = saveArray(input_array)
+    inputs = inputsInt()
 
+    for input in inputs:
+        # save the array
+        n = len(input)
+        print("************************************")
+        print("n = ", n)
+        #print(input)
+        sortArrayList = saveArray(input)
 
-    time0 = quickSort(sortArrayList[0], 0, n - 1)
-    printKthElement(sortArrayList[0], k)
+        timeList = []
 
-    time1 = insertionSort(sortArrayList[1])
-    printKthElement(sortArrayList[1], k)
+        time0 = quickSort(sortArrayList[0], 0, n - 1)
+        timeList.append(time0)
+        printKthElement(sortArrayList[0], k)
 
-    time2 = mergeSort(sortArrayList[2])
-    printKthElement(sortArrayList[2], k)
+        time1 = insertionSort(sortArrayList[1])
+        timeList.append(time1)
+        printKthElement(sortArrayList[1], k)
 
-    time3 = partialSelectionSort(sortArrayList[3], k)
-    printKthElement(sortArrayList[3], k)
+        time2 = mergeSort(sortArrayList[2])
+        timeList.append(time2)
+        printKthElement(sortArrayList[2], k)
 
-    start_time = time.perf_counter()
-    time4 = quickSelect(sortArrayList[4], 0, n - 1, k)
-    time4 = time.perf_counter() - start_time
-    printKthElement(sortArrayList[4], k)
+        time3 = partialSelectionSort(sortArrayList[3], k)
+        timeList.append(time3)
+        printKthElement(sortArrayList[3], k)
 
-    print(f"Elapsed time quickSort: {time0:0.9f} seconds")
-    print(f"Elapsed time insertionSort: {time1:0.9f} seconds")
-    print(f"Elapsed time mergeSort: {time2:0.9f} seconds")
-    print(f"Elapsed time partialSelectionSort: {time3:0.9f} seconds")
-    print(f"Elapsed time quickSelect: {time4:0.9f} seconds")
+        start_time = time.perf_counter()
+        quickSelect(sortArrayList[4], 0, n - 1, k)
+        time4 = time.perf_counter() - start_time
+        timeList.append(time4)
+        printKthElement(sortArrayList[4], k)
+
+        print(f"Elapsed time quickSort: {timeList[0]:0.9f} seconds")
+        print(f"Elapsed time insertionSort: {timeList[1]:0.9f} seconds")
+        print(f"Elapsed time mergeSort: {timeList[2]:0.9f} seconds")
+        print(f"Elapsed time partialSelectionSort: {timeList[3]:0.9f} seconds")
+        print(f"Elapsed time quickSelect: {timeList[4]:0.9f} seconds")
 
 
 if __name__ == "__main__":
