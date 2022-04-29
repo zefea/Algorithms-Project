@@ -14,7 +14,7 @@
 #
 
 from Algorithm import *
-
+import matplotlib.pyplot as plt
 
 # do not consider best or worst cases, just a random input for now
 def generateInputRandom(n):
@@ -22,21 +22,32 @@ def generateInputRandom(n):
 
     return list(randnums)
 
-def inputsInt():
+def inputsInt(list):
     inputs = []
     i = 0
-    n = 20
-    for i in range(3):
+    n = 50
+    for i in range(5):
         input_array = generateInputRandom(n)
         inputs.append(input_array)
-        n = n * 5
+        list.append(n)
+        n = n * 2
+
 
     return inputs
 
 def main():
     k = 3
     # input_array = [12, 11, 13, 6, 4, 2, 19]
-    inputs = inputsInt()
+    ns = []
+    inputs = inputsInt(ns)
+
+    ax = []
+    bx = []
+    cx = []
+    dx = []
+    ex = []
+    fx = []
+
 
     for input in inputs:
         # save the array
@@ -51,28 +62,52 @@ def main():
         insertionSort = Algorithm("insertionSort", input, k)
         insertionSort.insertionSort()
         print(insertionSort.methodName, ":", insertionSort.kthsmallest, ",", f"{insertionSort.elapsedTime:0.9f}")
+        ax.append(insertionSort.elapsedTime)
 
         mergeSort = Algorithm("mergeSort", input, k)
         mergeSort.mergeFinal()
         print(mergeSort.methodName, ":", mergeSort.kthsmallest, ", ", f"{mergeSort.elapsedTime:0.9f}")
+        bx.append(mergeSort.elapsedTime)
 
         quicksort = Algorithm("quicksort", input, k)
         quicksort.quicksort(input, 0, n - 1, 0)
         print(quicksort.methodName, ":", quicksort.kthsmallest, ",", f"{quicksort.elapsedTime:0.9f}")
+        cx.append(quicksort.elapsedTime)
 
         partialSelectionSort = Algorithm("partialSelectionSort", input, k)
         partialSelectionSort.partialSelectionSort()
         print(partialSelectionSort.methodName, ":", partialSelectionSort.kthsmallest, ",",
               f"{partialSelectionSort.elapsedTime:0.9f}")
+        dx.append(partialSelectionSort.elapsedTime)
 
         quickSelect = Algorithm("quickSelect", input, k)
         quickSelect.quickSelect(input, 0, n - 1, k, "none")
         print(quickSelect.methodName, ":", quickSelect.kthsmallest, ",", f"{quickSelect.elapsedTime:0.9f}")
+        ex.append(quickSelect.elapsedTime)
 
-        quickSelect = Algorithm("quickSelectwithmedian", input, k)
-        quickSelect.quickSelect(input, 0, n - 1, k, "median")
-        print(quickSelect.methodName, ":", quickSelect.kthsmallest, ",", f"{quickSelect.elapsedTime:0.9f}")
+        quickSelectwithmedian = Algorithm("quickSelectwithmedian", input, k)
+        quickSelectwithmedian.quickSelect(input, 0, n - 1, k, "median")
+        print(quickSelectwithmedian.methodName, ":", quickSelectwithmedian.kthsmallest, ",", f"{quickSelectwithmedian.elapsedTime:0.9f}")
+        fx.append(quickSelectwithmedian.elapsedTime)
 
+
+
+    # Plot - comparision of all
+    plt.plot(ns, ax, 'c-', label='insertionSort')
+    plt.plot(ns, bx, 'b-', label='mergeSort')
+    plt.plot(ns, cx, 'y-', label='quickSort')
+    plt.plot(ns, dx, 'r-', label='partialSelectionSort')
+    plt.plot(ns, ex, 'm-', label='quickSelect')
+    plt.plot(ns, fx, 'g-', label='quickSelectwithmedian')
+
+    # plt.ylim([0, 0.02])
+    plt.legend(loc='upper left')
+    plt.xlabel('input size')
+    plt.ylabel('time')
+
+    # plt.show()
+    plt.savefig('n-vs-time.png')
+    plt.close()
 
 if __name__ == "__main__":
     main()
