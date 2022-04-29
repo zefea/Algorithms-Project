@@ -16,6 +16,7 @@
 
 import numpy as np
 import time
+import math
 
 
 # Function to do insertion sort (1)
@@ -85,6 +86,10 @@ def mergeSort(arr):
     return elapsed_time
 
 
+def swap(list, pos1, pos2):
+    list[pos1], list[pos2] = list[pos2], list[pos1]
+
+
 def quicksort(arr, left, right, pivot):
     # pivot = 0;
 
@@ -93,6 +98,24 @@ def quicksort(arr, left, right, pivot):
 
         quicksort(arr, left, pivot - 1, left)
         quicksort(arr, pivot + 1, right, pivot + 1)
+
+def getMedian(arr, left, right):
+
+    center = math.ceil((left+right)/2);
+    if arr[left] > arr[center]:
+        swap(arr, left, center)
+
+    if arr[left] > arr[right]:
+        swap(arr, left, right)
+
+    if arr[center] > arr[right]:
+        swap(arr, center, right)
+
+    swap(arr, center, left)
+
+    return right
+
+
 
 
 
@@ -157,7 +180,7 @@ def quickSelect(arr, l, r, k):
         # Partition the array around last
         # element and get position of pivot
         # element in sorted array
-        index = partition(arr, l, r, 0)
+        index = partition(arr, l, r, getMedian(arr, l, r))
 
         # if position is same as k
         if (index - l == k - 1):
@@ -169,8 +192,7 @@ def quickSelect(arr, l, r, k):
             return quickSelect(arr, l, index - 1, k)
 
         # Else recur for right subarray
-        return quickSelect(arr, index + 1, r,
-                           k - index + l - 1)
+        return quickSelect(arr, index + 1, r, k - index + l - 1)
     print("Index out of bound")
 
 
@@ -208,7 +230,7 @@ def inputsInt():
     for i in range(3):
         input_array = generateInputRandom(n)
         inputs.append(input_array)
-        n = n * 10
+        # n = n * 10
 
     return inputs
 
