@@ -85,48 +85,6 @@ def mergeSort(arr):
     return elapsed_time
 
 
-# Function to do Quick sort (3)
-def partition(arr, low, high):
-    i = (low - 1)  # index of smaller element
-    pivot = arr[low]  # pivot
-
-    for j in range(low, high):
-
-        # If current element is smaller than or
-        # equal to pivot
-        if arr[j] <= pivot:
-            # increment index of smaller element
-            i = i + 1
-            arr[i], arr[j] = arr[j], arr[i]
-
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return (i + 1)
-
-
-# The main function that implements QuickSort
-# arr[] --> Array to be sorted,
-# low  --> Starting index,
-# high  --> Ending index
-
-# Function to do Quick sort
-def quickSort(arr, low, high):
-    start_time = time.perf_counter()
-    if len(arr) == 1:
-        return arr
-    if low < high:
-        # pi is partitioning index, arr[p] is now
-        # at right place
-        pi = partition(arr, low, high)
-
-        # Separately sort elements before
-        # partition and after partition
-        quickSort(arr, low, pi - 1)
-        quickSort(arr, pi + 1, high)
-
-    elapsed_time = time.perf_counter() - start_time
-    return elapsed_time
-
-
 # partial selection sort (4)
 def partialSelectionSort(arr, k):
     start_time = time.perf_counter()
@@ -140,7 +98,7 @@ def partialSelectionSort(arr, k):
                 temp = arr[i]
                 arr[i] = arr[minIndex]
                 arr[minIndex] = temp
-    #print(arr)
+    # print(arr)
     elapsed_time = time.perf_counter() - start_time
     return elapsed_time
 
@@ -149,6 +107,48 @@ def partialSelectionSort(arr, k):
 # arr[] --> Array to be sorted,
 # low  --> Starting index,
 # high  --> Ending index
+def swap(list, pos1, pos2):
+    list[pos1], list[pos2] = list[pos2], list[pos1]
+    return list
+
+
+def getMedian(arr, left, right):
+    center = (left + right) / 2
+
+    if arr[left] > arr[center]:
+        swap(arr, left, center)
+
+    if arr[left] > arr[right]:
+        swap(arr, left, right)
+
+    if arr[center] > arr[right]:
+        swap(arr, center, right)
+
+    swap(arr, center, left)
+    return arr[right]
+
+
+def partition(arr, left, right, index):
+    pivotValue = arr[index]
+    storedIndex = left
+
+    tmp = arr[index]
+    arr[index] = arr[right]
+    arr[right] = tmp
+
+    for i in range(left, right):
+        if arr[i] <= pivotValue:
+            tmp = arr[i]
+            arr[i] = arr[storedIndex]
+            arr[storedIndex] = tmp
+
+            storedIndex = storedIndex + 1
+
+    tmp = arr[storedIndex]
+    arr[storedIndex] = arr[right]
+    arr[right] = tmp
+
+    return storedIndex
 
 
 # finds the kth position (of the sorted array)
@@ -159,12 +159,13 @@ def partialSelectionSort(arr, k):
 def quickSelect(arr, l, r, k):
     # if k is smaller than number of
     # elements in array
+    getMedian(arr, l, r)
     if (k > 0 and k <= r - l + 1):
 
         # Partition the array around last
         # element and get position of pivot
         # element in sorted array
-        index = partition(arr, l, r)
+        index = partition(arr, l, r, 0)
 
         # if position is same as k
         if (index - l == k - 1):
@@ -181,33 +182,34 @@ def quickSelect(arr, l, r, k):
     print("Index out of bound")
 
 
-def printKthElement(arr, k):
-    print(arr[k - 1])
+def printKthElement(name, arr, k):
+    print(name, ": ", arr[k - 1])
 
 
 def saveArray(input_array):
     arr_list = []
     arr_array = input_array.copy()
 
-    i=0
-    #for seven algorithms saved array for each of them
+    i = 0
+    # for seven algorithms saved array for each of them
     for i in range(7):
         arr_list.append(arr_array)
 
     print(len(arr_list))
     return arr_list
 
-def plot_nvstime(timeList,nlist):
-    pass
 
+def plot_nvstime(timeList, nlist):
+    pass
 
 
 # do not consider best or worst cases, just a random input for now
 def generateInputRandom(n):
     randnums = np.random.randint(1, 1001, n)
-    #print(randnums)
+    # print(randnums)
 
     return list(randnums)
+
 
 def inputsInt():
     inputs = []
@@ -220,9 +222,10 @@ def inputsInt():
 
     return inputs
 
+
 def main():
     k = 3
-    #input_array = [12, 11, 13, 6, 4, 2, 19]
+    # input_array = [12, 11, 13, 6, 4, 2, 19]
     inputs = inputsInt()
 
     for input in inputs:
@@ -230,32 +233,38 @@ def main():
         n = len(input)
         print("************************************")
         print("n = ", n)
-        #print(input)
+        # print(input)
         sortArrayList = saveArray(input)
         timeList = []
 
-        time0 = quickSort(sortArrayList[0], 0, n - 1)
+        a = 0
+        timeList.append(a)
+        '''start_time = time.perf_counter()
+        quickSort(sortArrayList[0], 0, n - 1)
+        print(sortArrayList[0])
+        time0 = time.perf_counter() - start_time
         timeList.append(time0)
-        printKthElement(sortArrayList[0], k)
-
+        printKthElement("quickSort",sortArrayList[0], k)
+        '''
         time1 = insertionSort(sortArrayList[1])
         timeList.append(time1)
-        printKthElement(sortArrayList[1], k)
+        printKthElement("insertionSort", sortArrayList[1], k)
 
         time2 = mergeSort(sortArrayList[2])
         timeList.append(time2)
-        printKthElement(sortArrayList[2], k)
+        printKthElement("mergesort", sortArrayList[2], k)
 
         time3 = partialSelectionSort(sortArrayList[3], k)
         timeList.append(time3)
-        printKthElement(sortArrayList[3], k)
+        printKthElement("partialSelectionSort", sortArrayList[3], k)
 
         start_time = time.perf_counter()
         kthsmallest = quickSelect(sortArrayList[4], 0, n - 1, k)
         time4 = time.perf_counter() - start_time
         timeList.append(time4)
-        print(kthsmallest)
-        #printKthElement(sortArrayList[4], k)
+        print(sortArrayList[4])
+        print("quick select:", kthsmallest)
+        # printKthElement(sortArrayList[4], k)
 
         print(f"Elapsed time quickSort: {timeList[0]:0.9f} seconds")
         print(f"Elapsed time insertionSort: {timeList[1]:0.9f} seconds")
