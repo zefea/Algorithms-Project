@@ -17,14 +17,17 @@ from Algorithm import *
 import matplotlib.pyplot as plt
 import random
 
+
 # do not consider best or worst cases, just a random input for now
 def generateInputRandom(n):
     randnums = np.random.randint(1, 1000, n)
 
     return list(randnums)
 
+
 def inputsInt(list, type):
     inputs = []
+
     i = 0
     n = 50
     for i in range(5):
@@ -35,11 +38,100 @@ def inputsInt(list, type):
         if type == 'sorted':
             input_array.sort()
         if type == 'reversed':
-           input_array.reverse()
+            input_array.reverse()
 
     return inputs
 
+def sortthearrays(inputs):
+    for input in inputs:
+        input.sort()
 
+def reversedsortthearrays(inputs):
+    for input in inputs:
+        input.sort()
+        input.reverse()
+
+def sortInvidiualComparision(k):
+    ns = []
+    inputs = inputsInt(ns, "none")
+
+    xinsert = []
+    xmerge = []
+    # sorted
+    input_sorted = inputs.copy()
+    sortthearrays(input_sorted)
+    for input in input_sorted:
+        # save the array
+        n = len(input)
+        insertionSort = Algorithm("insertionSort", input, k)
+        insertionSort.insertionSort()
+        print(insertionSort.methodName, ":", insertionSort.kthsmallest, ",", f"{insertionSort.elapsedTime:0.9f}")
+        xinsert.append(insertionSort.elapsedTime)
+
+        mergeSort = Algorithm("mergeSort", input, k)
+        mergeSort.mergeFinal()
+        print(mergeSort.methodName, ":", mergeSort.kthsmallest, ", ", f"{mergeSort.elapsedTime:0.9f}")
+        xmerge.append(mergeSort.elapsedTime)
+        #xmerge.append(mergeSort.counter)
+
+    xinsert2 = []
+    xmerge2 = []
+    # reversed
+    input_reversed = inputs.copy()
+    reversedsortthearrays(input_reversed)
+    for input in input_reversed:
+        # save the array
+        n = len(input)
+
+        insertionSort = Algorithm("insertionSort", input, k)
+        insertionSort.insertionSort()
+        print(insertionSort.methodName, ":", insertionSort.kthsmallest, ",", f"{insertionSort.elapsedTime:0.9f}")
+        xinsert2.append(insertionSort.elapsedTime)
+
+        mergeSort = Algorithm("mergeSort", input, k)
+        mergeSort.mergeFinal()
+        print(mergeSort.methodName, ":", mergeSort.kthsmallest, ", ", f"{mergeSort.elapsedTime:0.9f}")
+        xmerge2.append(mergeSort.elapsedTime)
+        #xmerge2.append(mergeSort.counter)
+
+
+    # none
+    xinsert3 = []
+    xmerge3 = []
+    for input in inputs:
+        # save the array
+        n = len(input)
+
+        insertionSort = Algorithm("insertionSort", input, k)
+        insertionSort.insertionSort()
+        print(insertionSort.methodName, ":", insertionSort.kthsmallest, ",", f"{insertionSort.elapsedTime:0.9f}")
+        xinsert3.append(insertionSort.elapsedTime)
+
+        mergeSort = Algorithm("mergeSort", input, k)
+        mergeSort.mergeFinal()
+        print(mergeSort.methodName, ":", mergeSort.kthsmallest, ", ", f"{mergeSort.elapsedTime:0.9f}")
+        xmerge3.append(mergeSort.elapsedTime)
+        #xmerge3.append(mergeSort.counter)
+
+    plt.figure(1)
+    plt.plot(ns, xinsert, 'm-', label='insertionSort - sorted')
+    plt.plot(ns, xinsert2, 'g-', label='insertionSort - reversed')
+    plt.plot(ns, xinsert3, 'b-', label='insertionSort - none')
+    plt.legend(loc='upper left')
+    plt.xlabel('input size')
+    plt.ylabel('time')
+
+    plt.figure(2)
+    plt.plot(ns, xmerge, 'm-', label='mergeSort - sorted')
+    plt.plot(ns, xmerge2, 'g-', label='mergeSort - reversed')
+    plt.plot(ns, xmerge3, 'b-', label='mergeSort - none')
+    plt.legend(loc='upper left')
+    plt.xlabel('input size')
+    plt.ylabel('time')
+
+    plt.show()
+    # plt.savefig('n-vs-time.png')
+    plt.close()
 
 
 def main():
@@ -57,6 +149,7 @@ def main():
     ex = []
     fx = []
 
+    sortInvidiualComparision(k)
 
     for input in inputs:
         # save the array
@@ -96,10 +189,9 @@ def main():
 
         quickSelectwithmedian = Algorithm("quickSelectwithmedian", input, k)
         quickSelectwithmedian.quickSelect(input, 0, n - 1, k, "median")
-        print(quickSelectwithmedian.methodName, ":", quickSelectwithmedian.kthsmallest, ",", f"{quickSelectwithmedian.elapsedTime:0.9f}")
+        print(quickSelectwithmedian.methodName, ":", quickSelectwithmedian.kthsmallest, ",",
+              f"{quickSelectwithmedian.elapsedTime:0.9f}")
         fx.append(quickSelectwithmedian.elapsedTime)
-
-
 
     # Plot - comparision of all
     plt.plot(ns, ax, 'c-', label='insertionSort')
@@ -117,6 +209,7 @@ def main():
     plt.show()
     # plt.savefig('n-vs-time.png')
     plt.close()
+
 
 if __name__ == "__main__":
     main()

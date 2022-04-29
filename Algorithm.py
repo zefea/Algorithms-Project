@@ -11,6 +11,7 @@ class Algorithm:
         self.kthsmallest = -1
         self.k = k
         self.elapsedTime = 0
+        self.counter = 0
 
     # Function to do insertion sort (1)
 
