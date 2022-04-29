@@ -232,7 +232,6 @@ def main():
         print("n = ", n)
         #print(input)
         sortArrayList = saveArray(input)
-
         timeList = []
 
         time0 = quickSort(sortArrayList[0], 0, n - 1)
@@ -252,10 +251,11 @@ def main():
         printKthElement(sortArrayList[3], k)
 
         start_time = time.perf_counter()
-        quickSelect(sortArrayList[4], 0, n - 1, k)
+        kthsmallest = quickSelect(sortArrayList[4], 0, n - 1, k)
         time4 = time.perf_counter() - start_time
         timeList.append(time4)
-        printKthElement(sortArrayList[4], k)
+        print(kthsmallest)
+        #printKthElement(sortArrayList[4], k)
 
         print(f"Elapsed time quickSort: {timeList[0]:0.9f} seconds")
         print(f"Elapsed time insertionSort: {timeList[1]:0.9f} seconds")
