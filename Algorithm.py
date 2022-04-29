@@ -23,7 +23,7 @@ class Algorithm:
         # Traverse through 1 to len(arr)
         start_time = time.perf_counter()
         for i in range(1, len(self.arr)):
-
+            self.counter = self.counter + 1
             key = self.arr[i]
 
             # Move elements of arr[0..i-1], that are
@@ -31,6 +31,7 @@ class Algorithm:
             # of their current position
             j = i - 1
             while j >= 0 and key < self.arr[j]:
+                self.counter = self.counter + 1
                 self.arr[j + 1] = self.arr[j]
                 j -= 1
             self.arr[j + 1] = key
@@ -63,6 +64,7 @@ class Algorithm:
 
             # Copy data to temp arrays L[] and R[]
             while i < len(L) and j < len(R):
+                self.counter = self.counter + 1
                 if L[i] < R[j]:
                     arr[k] = L[i]
                     i += 1
@@ -131,6 +133,7 @@ class Algorithm:
         arr[right] = tmp
 
         for i in range(left, right):
+            self.counter = self.counter + 1
             if arr[i] <= pivotValue:
                 tmp = arr[i]
                 arr[i] = arr[storedIndex]
@@ -149,10 +152,13 @@ class Algorithm:
     def partialSelectionSort(self):
         start_time = time.perf_counter()
         for i in range(0, self.k):
+            self.counter = self.counter + 1
             # minIndex = i
             minValue = self.arr[i]
             for j in range(i + 1, len(self.arr)):
+                self.counter = self.counter + 1
                 if self.arr[j] < minValue:
+                    self.counter = self.counter + 1
                     minIndex = j
                     minValue = self.arr[j]
                     temp = self.arr[i]
