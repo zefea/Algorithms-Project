@@ -15,14 +15,15 @@
 
 from Algorithm import *
 import matplotlib.pyplot as plt
+import random
 
 # do not consider best or worst cases, just a random input for now
 def generateInputRandom(n):
-    randnums = np.random.randint(1, 1001, n)
+    randnums = np.random.randint(1, 1000, n)
 
     return list(randnums)
 
-def inputsInt(list):
+def inputsInt(list, type):
     inputs = []
     i = 0
     n = 50
@@ -31,15 +32,23 @@ def inputsInt(list):
         inputs.append(input_array)
         list.append(n)
         n = n * 2
-
+        if type == 'sorted':
+            input_array.sort()
+        if type == 'reversed':
+           input_array.reverse()
 
     return inputs
+
+
+
 
 def main():
     k = 3
     # input_array = [12, 11, 13, 6, 4, 2, 19]
     ns = []
-    inputs = inputsInt(ns)
+    # inputs = inputsInt(ns, "none")
+    # inputs = inputsInt(ns,"sorted")
+    inputs = inputsInt(ns, "reversed")
 
     ax = []
     bx = []
@@ -105,8 +114,8 @@ def main():
     plt.xlabel('input size')
     plt.ylabel('time')
 
-    # plt.show()
-    plt.savefig('n-vs-time.png')
+    plt.show()
+    # plt.savefig('n-vs-time.png')
     plt.close()
 
 if __name__ == "__main__":
