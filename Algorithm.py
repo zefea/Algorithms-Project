@@ -158,7 +158,7 @@ class Algorithm:
             for j in range(i + 1, len(self.arr)):
                 self.counter = self.counter + 1
                 if self.arr[j] < minValue:
-                    self.counter = self.counter + 1
+                    # self.counter = self.counter + 1
                     minIndex = j
                     minValue = self.arr[j]
                     temp = self.arr[i]

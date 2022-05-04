@@ -107,8 +107,8 @@ def insertionSortAnalysis(k, inputs, ns):
         # k = len(input1) - 1
         insertionSort = Algorithm("insertionSort", input1, k)
         insertionSort.insertionSort()
-        # xinsert.append(insertionSort.elapsedTime)
-        xinsert.append(insertionSort.counter)
+        xinsert.append(insertionSort.elapsedTime)
+        # xinsert.append(insertionSort.counter)
 
     # --------------------------------- SORTED ARRAY ---------------------------------
     xinsert2 = []
@@ -118,8 +118,8 @@ def insertionSortAnalysis(k, inputs, ns):
         # k = len(input2) - 1
         insertionSort2 = Algorithm("insertionSort", input2, k)
         insertionSort2.insertionSort()
-        # xinsert2.append(insertionSort2.elapsedTime)
-        xinsert2.append(insertionSort2.counter)
+        xinsert2.append(insertionSort2.elapsedTime)
+        # xinsert2.append(insertionSort2.counter)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
     xinsert3 = []
@@ -130,8 +130,8 @@ def insertionSortAnalysis(k, inputs, ns):
         # k = len(input3) - 1
         insertionSort3 = Algorithm("insertionSort", input3, k)
         insertionSort3.insertionSort()
-        # xinsert3.append(insertionSort3.elapsedTime)
-        xinsert3.append(insertionSort3.counter)
+        xinsert3.append(insertionSort3.elapsedTime)
+        # xinsert3.append(insertionSort3.counter)
 
     input_dup = duplicateInput(ns)
     xinsert4 = []
@@ -139,8 +139,8 @@ def insertionSortAnalysis(k, inputs, ns):
         # k = len(input4) - 1
         insertionSort4 = Algorithm("insertionSort", input4, k)
         insertionSort4.insertionSort()
-        # xinsert4.append(insertionSort4.elapsedTime)
-        xinsert4.append(insertionSort4.counter)
+        xinsert4.append(insertionSort4.elapsedTime)
+        # xinsert4.append(insertionSort4.counter)
 
     avgArray = averageInput(ns)
     xinsert5 = []
@@ -152,8 +152,8 @@ def insertionSortAnalysis(k, inputs, ns):
             # k = len(input4) - 1
             insertionSort5 = Algorithm("insertionSort", input5, k)
             insertionSort5.insertionSort()
-            #  avg = avg + insertionSort5.elapsedTime
-            avg = avg + insertionSort5.counter
+            avg = avg + insertionSort5.elapsedTime
+            # avg = avg + insertionSort5.counter
 
         xinsert5.append(avg / s)
 
@@ -174,8 +174,8 @@ def mergesortAnalyis(k, inputs, ns):
         n = len(input)
         mergeSort = Algorithm("mergeSort", input, k)
         mergeSort.mergeFinal()
-        # xmerge.append(mergeSort.elapsedTime)
-        xmerge.append(mergeSort.counter)
+        xmerge.append(mergeSort.elapsedTime)
+        # xmerge.append(mergeSort.counter)
 
     # --------------------------------- SORTED ARRAY ---------------------------------
     xmerge2 = []
@@ -184,8 +184,8 @@ def mergesortAnalyis(k, inputs, ns):
     for input2 in input_sorted:
         mergeSort2 = Algorithm("mergeSort", input2, k)
         mergeSort2.mergeFinal()
-        # xmerge2.append(mergeSort2.elapsedTime)
-        xmerge2.append(mergeSort2.counter)
+        xmerge2.append(mergeSort2.elapsedTime)
+        # xmerge2.append(mergeSort2.counter)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
     xmerge3 = []
@@ -194,16 +194,16 @@ def mergesortAnalyis(k, inputs, ns):
     for input3 in input_reversed:
         mergeSort3 = Algorithm("mergeSort", input3, k)
         mergeSort3.mergeFinal()
-        # xmerge3.append(mergeSort3.elapsedTime)
-        xmerge3.append(mergeSort3.counter)
+        xmerge3.append(mergeSort3.elapsedTime)
+        # xmerge3.append(mergeSort3.counter)
 
     input_dup = duplicateInput(ns)
     xmerge4 = []
     for input4 in input_dup:
         mergeSort4 = Algorithm("mergeSort", input4, k)
         mergeSort4.mergeFinal()
-        # xmerge4.append(mergeSort4.elapsedTime)
-        xmerge4.append(mergeSort4.counter)
+        xmerge4.append(mergeSort4.elapsedTime)
+        # xmerge4.append(mergeSort4.counter)
 
     avgArray = averageInput(ns)
     xmerge5 = []
@@ -214,8 +214,8 @@ def mergesortAnalyis(k, inputs, ns):
             # k = len(input4) - 1
             mergeSort5 = Algorithm("mergeSort", input5, k)
             mergeSort5.mergeFinal()
-            # avg = avg + mergeSort5.elapsedTime)
-            avg = avg + mergeSort5.counter
+            avg = avg + mergeSort5.elapsedTime
+            # avg = avg + mergeSort5.counter
 
         xmerge5.append(avg / s)
 
@@ -238,8 +238,8 @@ def quicksortAnalyis(k, inputs, ns):
         n = len(input)
         quicksort = Algorithm("quicksort", input, k)
         quicksort.quicksort(input, 0, n - 1, 0)
-        # xquick.append(quicksort.elapsedTime)
-        xquick.append(quicksort.counter)
+        xquick.append(quicksort.elapsedTime)
+        # xquick.append(quicksort.counter)
 
     # --------------------------------- SORTED ARRAY ---------------------------------
     xquick2 = []
@@ -250,8 +250,8 @@ def quicksortAnalyis(k, inputs, ns):
         n = len(input2)
         quicksort2 = Algorithm("quicksort", input2, k)
         quicksort2.quicksort(input2, 0, n - 1, 0)
-        # xquick2.append(quicksort2.elapsedTime)
-        xquick2.append(quicksort2.counter)
+        xquick2.append(quicksort2.elapsedTime)
+        # xquick2.append(quicksort2.counter)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
     xquick3 = []
@@ -261,8 +261,8 @@ def quicksortAnalyis(k, inputs, ns):
         n = len(input3)
         quicksort3 = Algorithm("quicksort", input3, k)
         quicksort3.quicksort(input3, 0, n - 1, 0)
-        # xquick3.append(quicksort3.elapsedTime)
-        xquick3.append(quicksort3.counter)
+        xquick3.append(quicksort3.elapsedTime)
+        # xquick3.append(quicksort3.counter)
 
     input_dup = duplicateInput(ns)
     xquick4 = []
@@ -270,8 +270,8 @@ def quicksortAnalyis(k, inputs, ns):
         n = len(input4)
         quicksort4 = Algorithm("quicksort", input4, k)
         quicksort4.quicksort(input4, 0, n - 1, 0)
-        # xquick4.append(quicksort4.elapsedTime)
-        xquick4.append(quicksort4.counter)
+        xquick4.append(quicksort4.elapsedTime)
+        # xquick4.append(quicksort4.counter)
 
     avgArray = averageInput(ns)
     xquick5 = []
@@ -283,8 +283,8 @@ def quicksortAnalyis(k, inputs, ns):
             n = len(input5)
             quicksort5 = Algorithm("quicksort", input5, k)
             quicksort5.quicksort(input5, 0, n - 1, 0)
-            # avg = avg + quicksort5.elapsedTime
-            avg = avg + quicksort5.counter
+            avg = avg + quicksort5.elapsedTime
+            # avg = avg + quicksort5.counter
 
         xquick5.append(avg / s)
 
@@ -305,8 +305,8 @@ def partialSelectionSortAnalyis(k, inputs, ns):
         n = len(input)
         partialSelectionSort = Algorithm("partialSelectionSort", input, k)
         partialSelectionSort.partialSelectionSort()
-        # xp.append(partialSelectionSort.elapsedTime)
-        xp.append(partialSelectionSort.counter)
+        xp.append(partialSelectionSort.elapsedTime)
+        # xp.append(partialSelectionSort.counter)
 
     # --------------------------------- SORTED ARRAY ---------------------------------
     xp2 = []
@@ -317,8 +317,8 @@ def partialSelectionSortAnalyis(k, inputs, ns):
         n = len(input2)
         partialSelectionSort2 = Algorithm("partialSelectionSort", input2, k)
         partialSelectionSort2.partialSelectionSort()
-        # xp2.append(partialSelectionSort2.elapsedTime)
-        xp2.append(partialSelectionSort2.counter)
+        xp2.append(partialSelectionSort2.elapsedTime)
+        #xp2.append(partialSelectionSort2.counter)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
     xp3 = []
@@ -328,8 +328,8 @@ def partialSelectionSortAnalyis(k, inputs, ns):
         n = len(input3)
         partialSelectionSort3 = Algorithm("partialSelectionSort", input3, k)
         partialSelectionSort3.partialSelectionSort()
-        # xp3.append(partialSelectionSort3.elapsedTime)
-        xp3.append(partialSelectionSort3.counter)
+        xp3.append(partialSelectionSort3.elapsedTime)
+        # xp3.append(partialSelectionSort3.counter)
 
     input_dup = duplicateInput(ns)
     xp4 = []
@@ -337,8 +337,8 @@ def partialSelectionSortAnalyis(k, inputs, ns):
         n = len(input4)
         partialSelectionSort4 = Algorithm("partialSelectionSort", input4, k)
         partialSelectionSort4.partialSelectionSort()
-        # xp4.append(partialSelectionSort4.elapsedTime)
-        xp4.append(partialSelectionSort4.counter)
+        xp4.append(partialSelectionSort4.elapsedTime)
+        # xp4.append(partialSelectionSort4.counter)
 
     avgArray = averageInput(ns)
     xp5 = []
@@ -349,8 +349,8 @@ def partialSelectionSortAnalyis(k, inputs, ns):
             n = len(input5)
             partialSelectionSort5 = Algorithm("partialSelectionSort", input5, k)
             partialSelectionSort5.partialSelectionSort()
-            # avg = avg = partialSelectionSort5.elapsedTime
-            avg = avg + partialSelectionSort5.counter
+            avg = avg = partialSelectionSort5.elapsedTime
+            # avg = avg + partialSelectionSort5.counter
 
         xp5.append(avg / s)
 
