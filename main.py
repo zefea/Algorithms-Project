@@ -38,6 +38,17 @@ def inputsInt(list, type):
     return inputs
 
 
+def averageInput(ns):
+    avg = []
+    for n in ns:
+        inputs = []
+        for i in range(5):
+            input_array = generateInputRandom(n)
+            inputs.append(input_array)
+        avg.append(inputs)
+    return avg
+
+
 def sortthearrays(inputs):
     for inputx in inputs:
         inputx.sort()
@@ -48,241 +59,317 @@ def reversedsortthearrays(inputs):
         inputx.sort(reverse=True)
 
 
-# --------------------------------- insertion ---------------------------------
-def insertionSortAnalysis(k):
-    ns = []
-    inputs = inputsInt(ns, "none")
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xinsert3 = []
-    for input1 in inputs:
-        insertionSort3 = Algorithm("insertionSort", input1, k)
-        insertionSort3.insertionSort()
-        # print(insertionSort3.methodName, ":", insertionSort3.kthsmallest, ",", f"{insertionSort3.elapsedTime:0.9f}")
-        # xinsert3.append(insertionSort3.elapsedTime)
-        xinsert3.append(insertionSort3.counter)
+def shufflethearrays(inputs):
+    for inputx in inputs:
+        random.shuffle(inputx)
 
-    # --------------------------------- SORTED ARRAY ---------------------------------
+
+def duplicateInput(ns):
+    arr = []
+    i = 0
+    for n in ns:
+        print(n)
+        arr1 = []
+        for i in range(n):
+            arr1.append(1)
+        arr.append(arr1)
+
+    return arr
+
+
+def plotSort(ns, xinsert, sortname):
+    plt.figure(1)
+
+    plt.plot(ns, xinsert[0], 'g-', label=sortname + '- None')
+    plt.plot(ns, xinsert[1], 'm-', label=sortname + '- Sorted')
+    plt.plot(ns, xinsert[2], 'b-', label=sortname + '- Reverse Sorted')
+    plt.plot(ns, xinsert[3], 'y-', label=sortname + '- Duplicate')
+    plt.plot(ns, xinsert[4], 'k-', label=sortname + '- Average')
+
+    plt.legend(loc='upper left')
+    plt.xlabel('input size')
+    plt.ylabel('time')
+    plt.title(sortname)
+
+    #plt.show()
+    filename = sortname + ".png"
+    plt.savefig(filename)
+    plt.close()
+
+
+# --------------------------------- insertion ---------------------------------
+def insertionSortAnalysis(k, inputs, ns):
+
+    # --------------------------------- INITIAL ARRAY ---------------------------------
+    xinsertlist = []
     xinsert = []
-    input_sorted = inputs.copy()
-    sortthearrays(input_sorted)
-    for input2 in input_sorted:
-        insertionSort = Algorithm("insertionSort", input2, k)
+    for input1 in inputs:
+        # k = len(input1) - 1
+        insertionSort = Algorithm("insertionSort", input1, k)
         insertionSort.insertionSort()
-        # print(insertionSort.methodName, ":", insertionSort.kthsmallest, ",", f"{insertionSort.elapsedTime:0.9f}")
         # xinsert.append(insertionSort.elapsedTime)
         xinsert.append(insertionSort.counter)
 
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
+    # --------------------------------- SORTED ARRAY ---------------------------------
     xinsert2 = []
+    input_sorted = inputs.copy()
+    sortthearrays(input_sorted)
+    for input2 in input_sorted:
+        # k = len(input2) - 1
+        insertionSort2 = Algorithm("insertionSort", input2, k)
+        insertionSort2.insertionSort()
+        # xinsert2.append(insertionSort2.elapsedTime)
+        xinsert2.append(insertionSort2.counter)
+
+    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
+    xinsert3 = []
     # reversed
     input_reversed = inputs.copy()
     reversedsortthearrays(input_reversed)
     for input3 in input_reversed:
-        insertionSort2 = Algorithm("insertionSort", input3, k)
-        insertionSort2.insertionSort()
-        # print(insertionSort2.methodName, ":", insertionSort2.kthsmallest, ",", f"{insertionSort2.elapsedTime:0.9f}")
-        # xinsert2.append(insertionSort2.elapsedTime)
-        xinsert2.append(insertionSort2.counter)
+        # k = len(input3) - 1
+        insertionSort3 = Algorithm("insertionSort", input3, k)
+        insertionSort3.insertionSort()
+        # xinsert3.append(insertionSort3.elapsedTime)
+        xinsert3.append(insertionSort3.counter)
 
-    plt.figure(1)
-    plt.plot(ns, xinsert, 'm-', label='insertionSort - sorted')
-    plt.plot(ns, xinsert2, 'g-', label='insertionSort - reversed')
-    plt.plot(ns, xinsert3, 'b-', label='insertionSort - none')
-    plt.legend(loc='upper left')
-    plt.xlabel('input size')
-    plt.ylabel('time')
+    input_dup = duplicateInput(ns)
+    xinsert4 = []
+    for input4 in input_dup:
+        # k = len(input4) - 1
+        insertionSort4 = Algorithm("insertionSort", input4, k)
+        insertionSort4.insertionSort()
+        # xinsert4.append(insertionSort4.elapsedTime)
+        xinsert4.append(insertionSort4.counter)
 
-    # plt.show()
-    plt.savefig('insertionSort-n-vs-time.png')
-    plt.close()
+    avgArray = averageInput(ns)
+    xinsert5 = []
+    avg = 0
+
+    for input_avg in avgArray:
+        s = len(input_avg)
+        for input5 in input_avg:
+            # k = len(input4) - 1
+            insertionSort5 = Algorithm("insertionSort", input5, k)
+            insertionSort5.insertionSort()
+            #  avg = avg + insertionSort5.elapsedTime
+            avg = avg + insertionSort5.counter
+
+        xinsert5.append(avg / s)
+
+    xinsertlist.append(xinsert)
+    xinsertlist.append(xinsert2)
+    xinsertlist.append(xinsert3)
+    xinsertlist.append(xinsert4)
+    xinsertlist.append(xinsert5)
+
+    plotSort(ns, xinsertlist, "Insertion Sort")
 
 
-def mergesortAnalyis(k):
-    ns = []
-    inputs = inputsInt(ns, "none")
-
+def mergesortAnalyis(k, inputs, ns):
     # --------------------------------- INITIAL ARRAY ---------------------------------
-    xmerge3 = []
+    xmerge = []
     for input in inputs:
         # save the array
         n = len(input)
-        mergeSort3 = Algorithm("mergeSort", input, k)
-        mergeSort3.mergeFinal()
-        # print(mergeSort3.methodName, ":", mergeSort3.kthsmallest, ", ", f"{mergeSort3.elapsedTime:0.9f}")
-        # xmerge3.append(mergeSort3.elapsedTime)
-        xmerge3.append(mergeSort3.counter)
-
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    xinsert = []
-    xmerge = []
-    # sorted
-    input_sorted = inputs.copy()
-    sortthearrays(input_sorted)
-    for input in input_sorted:
         mergeSort = Algorithm("mergeSort", input, k)
         mergeSort.mergeFinal()
-        # print(mergeSort.methodName, ":", mergeSort.kthsmallest, ", ", f"{mergeSort.elapsedTime:0.9f}")
         # xmerge.append(mergeSort.elapsedTime)
         xmerge.append(mergeSort.counter)
 
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
+    # --------------------------------- SORTED ARRAY ---------------------------------
     xmerge2 = []
-    # reversed
-    input_reversed = inputs.copy()
-    reversedsortthearrays(input_reversed)
-    for input in input_reversed:
-        mergeSort2 = Algorithm("mergeSort", input, k)
+    input_sorted = inputs.copy()
+    sortthearrays(input_sorted)
+    for input2 in input_sorted:
+        mergeSort2 = Algorithm("mergeSort", input2, k)
         mergeSort2.mergeFinal()
-        # print(mergeSort2.methodName, ":", mergeSort2.kthsmallest, ", ", f"{mergeSort2.elapsedTime:0.9f}")
         # xmerge2.append(mergeSort2.elapsedTime)
         xmerge2.append(mergeSort2.counter)
 
-    plt.figure(1)
-    plt.plot(ns, xmerge, 'm-', label='mergeSort - sorted')
-    plt.plot(ns, xmerge2, 'g-', label='mergeSort - reversed')
-    plt.plot(ns, xmerge3, 'b-', label='mergeSort - none')
-    plt.legend(loc='upper left')
-    plt.xlabel('input size')
-    plt.ylabel('time')
-    # plt.show()
-    plt.savefig('mergeSort-n-vs-time.png')
-    plt.close()
+    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
+    xmerge3 = []
+    input_reversed = inputs.copy()
+    reversedsortthearrays(input_reversed)
+    for input3 in input_reversed:
+        mergeSort3 = Algorithm("mergeSort", input3, k)
+        mergeSort3.mergeFinal()
+        # xmerge3.append(mergeSort3.elapsedTime)
+        xmerge3.append(mergeSort3.counter)
+
+    input_dup = duplicateInput(ns)
+    xmerge4 = []
+    for input4 in input_dup:
+        mergeSort4 = Algorithm("mergeSort", input4, k)
+        mergeSort4.mergeFinal()
+        # xmerge4.append(mergeSort4.elapsedTime)
+        xmerge4.append(mergeSort4.counter)
+
+    avgArray = averageInput(ns)
+    xmerge5 = []
+    avg = 0
+    for input_avg in avgArray:
+        s = len(input_avg)
+        for input5 in input_avg:
+            # k = len(input4) - 1
+            mergeSort5 = Algorithm("mergeSort", input5, k)
+            mergeSort5.mergeFinal()
+            # avg = avg + mergeSort5.elapsedTime)
+            avg = avg + mergeSort5.counter
+
+        xmerge5.append(avg / s)
+
+    xmergelist = []
+    xmergelist.append(xmerge)
+    xmergelist.append(xmerge2)
+    xmergelist.append(xmerge3)
+    xmergelist.append(xmerge4)
+    xmergelist.append(xmerge5)
+
+    plotSort(ns, xmergelist, "Merge Sort")
 
 
-def quicksortAnalyis(k):
-    ns = []
-    inputs = inputsInt(ns, "none")
+def quicksortAnalyis(k, inputs, ns):
 
     # --------------------------------- INITIAL ARRAY ---------------------------------
-    xquick3 = []
+    xquick = []
     for input in inputs:
         # save the array
         n = len(input)
         quicksort = Algorithm("quicksort", input, k)
         quicksort.quicksort(input, 0, n - 1, 0)
-        # print(quicksort.methodName, ":", quicksort.kthsmallest, ",", f"{quicksort.elapsedTime:0.9f}")
-        # xquick3.append(quicksort.elapsedTime)
-        xquick3.append(quicksort.counter)
+        # xquick.append(quicksort.elapsedTime)
+        xquick.append(quicksort.counter)
 
     # --------------------------------- SORTED ARRAY ---------------------------------
-
-    xquick = []
+    xquick2 = []
     # sorted
     input_sorted = inputs.copy()
     sortthearrays(input_sorted)
-    for input in input_sorted:
-        n = len(input)
-        quicksort2 = Algorithm("quicksort", input, k)
-        quicksort2.quicksort(input, 0, n - 1, 0)
-        # print(quicksort2.methodName, ":", quicksort2.kthsmallest, ",", f"{quicksort2.elapsedTime:0.9f}")
-        # xquick.append(quicksort2.elapsedTime)
-        xquick.append(quicksort2.counter)
+    for input2 in input_sorted:
+        n = len(input2)
+        quicksort2 = Algorithm("quicksort", input2, k)
+        quicksort2.quicksort(input2, 0, n - 1, 0)
+        # xquick2.append(quicksort2.elapsedTime)
+        xquick2.append(quicksort2.counter)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    xquick2 = []
-    # reversed
+    xquick3 = []
     input_reversed = inputs.copy()
     reversedsortthearrays(input_reversed)
-    for input in input_reversed:
-        n = len(input)
-        quicksort3 = Algorithm("quicksort", input, k)
-        quicksort3.quicksort(input, 0, n - 1, 0)
-        # print(quicksort3.methodName, ":", quicksort3.kthsmallest, ",", f"{quicksort3.elapsedTime:0.9f}")
-        # xquick2.append(quicksort3.elapsedTime)
-        xquick2.append(quicksort3.counter)
+    for input3 in input_reversed:
+        n = len(input3)
+        quicksort3 = Algorithm("quicksort", input3, k)
+        quicksort3.quicksort(input3, 0, n - 1, 0)
+        # xquick3.append(quicksort3.elapsedTime)
+        xquick3.append(quicksort3.counter)
 
-    plt.figure(1)
-    plt.plot(ns, xquick, 'm-', label='quickSort - sorted')
-    plt.plot(ns, xquick2, 'g-', label='quickSort - reversed')
-    plt.plot(ns, xquick3, 'b-', label='quickSort - none')
-    plt.legend(loc='upper left')
-    plt.xlabel('input size')
-    plt.ylabel('time')
-    # plt.show()
-    plt.savefig('quickSort-n-vs-time.png')
-    plt.close()
+    input_dup = duplicateInput(ns)
+    xquick4 = []
+    for input4 in input_dup:
+        n = len(input4)
+        quicksort4 = Algorithm("quicksort", input4, k)
+        quicksort4.quicksort(input4, 0, n - 1, 0)
+        # xquick4.append(quicksort4.elapsedTime)
+        xquick4.append(quicksort4.counter)
+
+    avgArray = averageInput(ns)
+    xquick5 = []
+    avg = 0
+    for input_avg in avgArray:
+        s = len(input_avg)
+        for input5 in input_avg:
+            # k = len(input4) - 1
+            n = len(input5)
+            quicksort5 = Algorithm("quicksort", input5, k)
+            quicksort5.quicksort(input5, 0, n - 1, 0)
+            # avg = avg + quicksort5.elapsedTime
+            avg = avg + quicksort5.counter
+
+        xquick5.append(avg / s)
+
+    xquicklist = []
+    xquicklist.append(xquick)
+    xquicklist.append(xquick2)
+    xquicklist.append(xquick3)
+    xquicklist.append(xquick4)
+    xquicklist.append(xquick5)
+
+    plotSort(ns, xquicklist, "Quick Sort")
 
 
-def partialSelectionSortAnalyis(k):
-    ns = []
-    inputs = inputsInt(ns, "none")
-
+def partialSelectionSortAnalyis(k, inputs, ns):
     # --------------------------------- INITIAL ARRAY ---------------------------------
-    xp3 = []
+    xp = []
     for input in inputs:
-        # save the array
         n = len(input)
         partialSelectionSort = Algorithm("partialSelectionSort", input, k)
         partialSelectionSort.partialSelectionSort()
-        # print(partialSelectionSort.methodName, ":", partialSelectionSort.kthsmallest, ",",
-        # f"{partialSelectionSort.elapsedTime:0.9f}")
-        # print("counter 1:",partialSelectionSort.counter)
-        # xp3.append(partialSelectionSort.elapsedTime)
-        xp3.append(partialSelectionSort.counter)
+        # xp.append(partialSelectionSort.elapsedTime)
+        xp.append(partialSelectionSort.counter)
 
     # --------------------------------- SORTED ARRAY ---------------------------------
-
-    xp = []
+    xp2 = []
     # sorted
     input_sorted = inputs.copy()
     sortthearrays(input_sorted)
-    for input in input_sorted:
-        n = len(input)
-        partialSelectionSort2 = Algorithm("partialSelectionSort", input, k)
+    for input2 in input_sorted:
+        n = len(input2)
+        partialSelectionSort2 = Algorithm("partialSelectionSort", input2, k)
         partialSelectionSort2.partialSelectionSort()
-        # print(partialSelectionSort2.methodName, ":", partialSelectionSort2.kthsmallest, ",",
-        # f"{partialSelectionSort2.elapsedTime:0.9f}")
-        # xp.append(partialSelectionSort2.elapsedTime)
-        # print("counter 2:", partialSelectionSort.counter)
-        xp.append(partialSelectionSort2.counter)
+        # xp2.append(partialSelectionSort2.elapsedTime)
+        xp2.append(partialSelectionSort2.counter)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    xp2 = []
-    # reversed
+    xp3 = []
     input_reversed = inputs.copy()
     reversedsortthearrays(input_reversed)
-    for input in input_reversed:
-        n = len(input)
-        partialSelectionSort3 = Algorithm("partialSelectionSort", input, k)
+    for input3 in input_reversed:
+        n = len(input3)
+        partialSelectionSort3 = Algorithm("partialSelectionSort", input3, k)
         partialSelectionSort3.partialSelectionSort()
-        # print(partialSelectionSort3.methodName, ":", partialSelectionSort3.kthsmallest, ",",
-        # f"{partialSelectionSort3.elapsedTime:0.9f}")
-        # xp2.append(partialSelectionSort3.elapsedTime)
-        # print("counter 3:", partialSelectionSort3.counter)
-        xp2.append(partialSelectionSort3.counter)
+        # xp3.append(partialSelectionSort3.elapsedTime)
+        xp3.append(partialSelectionSort3.counter)
 
-    plt.figure(1)
-    plt.plot(ns, xp, 'm-', label='partialSelectionSort - sorted')
-    plt.plot(ns, xp2, 'g-', label='partialSelectionSort - reversed')
-    plt.plot(ns, xp3, 'b-', label='partialSelectionSort - none')
-    plt.legend(loc='upper left')
-    plt.xlabel('input size')
-    plt.ylabel('time')
-    # plt.show()
-    plt.savefig('partialSelectionSort-n-vs-time.png')
-    plt.close()
+    input_dup = duplicateInput(ns)
+    xp4 = []
+    for input4 in input_dup:
+        n = len(input4)
+        partialSelectionSort4 = Algorithm("partialSelectionSort", input4, k)
+        partialSelectionSort4.partialSelectionSort()
+        # xp4.append(partialSelectionSort4.elapsedTime)
+        xp4.append(partialSelectionSort4.counter)
+
+    avgArray = averageInput(ns)
+    xp5 = []
+    avg = 0
+    for input_avg in avgArray:
+        s = len(input_avg)
+        for input5 in input_avg:
+            n = len(input5)
+            partialSelectionSort5 = Algorithm("partialSelectionSort", input5, k)
+            partialSelectionSort5.partialSelectionSort()
+            # avg = avg = partialSelectionSort5.elapsedTime
+            avg = avg + partialSelectionSort5.counter
+
+        xp5.append(avg / s)
+
+    xplist = []
+    xplist.append(xp)
+    xplist.append(xp2)
+    xplist.append(xp3)
+    xplist.append(xp4)
+    xplist.append(xp5)
+    plotSort(ns, xplist, "Partial-Selection-Sort")
 
 
-def main():
-    k = 3
-    # input_array = [12, 11, 13, 6, 4, 2, 19]
-    ns = []
-    # inputs = inputsInt(ns, "none")
-    # inputs = inputsInt(ns,"sorted")
-    inputs = inputsInt(ns, "reversed")
-
+def generalComparision(k, inputs, ns):
     ax = []
     bx = []
     cx = []
     dx = []
     ex = []
     fx = []
-
-    insertionSortAnalysis(k)
-    mergesortAnalyis(k)
-    quicksortAnalyis(k)
-    partialSelectionSortAnalyis(k)
-
     for input in inputs:
         # save the array
         n = len(input)
@@ -337,10 +424,34 @@ def main():
     plt.legend(loc='upper left')
     plt.xlabel('input size')
     plt.ylabel('time')
+    plt.title("Comparision of ALgorithms")
 
-    plt.show()
-    # plt.savefig('n-vs-time.png')
+    # plt.show()
+    plt.savefig('n-vs-time.png')
     plt.close()
+
+
+def main():
+
+    # generate random input
+    ns = []
+    inputs = inputsInt(ns, "none")
+
+    k = 3
+
+    # algorithms analysis
+    insertionSortAnalysis(k,inputs, ns)
+    shufflethearrays(inputs)
+    mergesortAnalyis(k, inputs, ns)
+    shufflethearrays(inputs)
+    quicksortAnalyis(k, inputs, ns)
+    shufflethearrays(inputs)
+    partialSelectionSortAnalyis(k, inputs, ns)
+    shufflethearrays(inputs)
+
+
+    # comparision together
+    generalComparision(k, inputs, ns)
 
 
 if __name__ == "__main__":
