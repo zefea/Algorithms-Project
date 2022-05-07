@@ -96,7 +96,8 @@ def plotSort(ns, xinsert, sortname):
     plt.savefig(filename)
     plt.close()
 
-def updatexandy(x1,y1,next):
+
+def updatexandy(x1, y1, next):
     if next == 1:
         y1 = y1 + 1
 
@@ -109,10 +110,10 @@ def updatexandy(x1,y1,next):
     if y1 == 2:
         y1 = 1
 
-    return x1,y1
+    return x1, y1
 
 
-def plotvsforK(ns, arr, names, k,arrType):
+def plotvsforK(ns, arr, names, k, arrType):
     i = 0
     print(arr)
 
@@ -126,10 +127,9 @@ def plotvsforK(ns, arr, names, k,arrType):
     for j in range(4):
         i = 0
         for ar in arr:
-
             axis[x1, y1].plot(ns, arr[i][j], 's-', label=names[i])
             i = i + 1
-            print(x1,y1)
+            print(x1, y1)
             axis[x1, y1].set_title("k = " + str(k[j]))
             axis[x1, y1].legend(loc='upper left')
 
@@ -182,7 +182,7 @@ def convert(xlist, ns, name):
         axis[x1, y1].legend(loc='upper left')
         axis[x1, y1].set_title(types[k])
 
-        x1, y1 = updatexandy(x1,y1,next)
+        x1, y1 = updatexandy(x1, y1, next)
 
         k = k + 1
         arr_ret.append(arr)
@@ -198,16 +198,11 @@ def convert(xlist, ns, name):
     return arr_ret
 
 
-# --------------------------------- insertion ---------------------------------
-def insertionSortAnalysis(k, inputs, ns):
-    input_sorted = inputs.copy()
-    input_reversed = inputs.copy()
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xinsertlist = []
+def insertionLoop(inputs, k):
     xinsert = []
-    klist = [1, k]
     xs = []
     for input1 in inputs:
+        klist = [1, k]
         n = len(input1)
         klist.append(int(n / 2))
         klist.append(n - 1)
@@ -222,68 +217,27 @@ def insertionSortAnalysis(k, inputs, ns):
             # xinsert.append(insertionSort.counter)
         xs.append(x1)
 
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    xinsert2 = []
-    klist2 = [1, k]
-    xs2 = []
-    sortthearrays(input_sorted)
-    for input2 in input_sorted:
-        # k = len(input2) - 1
-        n = len(input2)
-        klist2.append(int(n / 2))
-        klist2.append(n - 1)
-        x1 = []
-        for k2 in klist2:
-            insertionSort2 = Algorithm("insertionSort", input2, k2)
-            insertionSort2.insertionSort()
-            if k2 == k:
-                xinsert2.append(insertionSort2.elapsedTime)
+    return xinsert, xs
 
-            x1.append(insertionSort2.elapsedTime)
-        xs2.append(x1)
-        # xinsert2.append(insertionSort2.counter)
+
+# --------------------------------- insertion ---------------------------------
+def insertionSortAnalysis(k, inputs, ns):
+    input_sorted = inputs.copy()
+    input_reversed = inputs.copy()
+    xinsertlist = []
+    # --------------------------------- INITIAL ARRAY ---------------------------------
+    xinsert, xs = insertionLoop(inputs, k)
+
+    # --------------------------------- SORTED ARRAY ---------------------------------
+    sortthearrays(input_sorted)
+    xinsert2, xs2 = insertionLoop(input_sorted, k)
 
     # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    xinsert3 = []
-    # reversed
-    klist3 = [1, k]
-    xs3 = []
     reversedsortthearrays(input_reversed)
-    for input3 in input_reversed:
-        # k = len(input3) - 1
-        n = len(input3)
-        klist3.append(int(n / 2))
-        klist3.append(n - 1)
-        x1 = []
-        for k2 in klist3:
-            insertionSort3 = Algorithm("insertionSort", input3, k2)
-            insertionSort3.insertionSort()
-            if k2 == k:
-                xinsert3.append(insertionSort3.elapsedTime)
-            x1.append(insertionSort3.elapsedTime)
-
-        xs3.append(x1)
-        # xinsert3.append(insertionSort3.counter)
-
+    xinsert3, xs3 = insertionLoop(input_reversed, k)
+    # --------------------------------- Duplicate SORTED ARRAY ---------------------------------
     input_dup = duplicateInput(ns)
-    xinsert4 = []
-    klist4 = [1, k]
-    xs4 = []
-    for input4 in input_dup:
-        # k = len(input4) - 1
-        n = len(input4)
-        klist4.append(int(n / 2))
-        klist4.append(n - 1)
-        x1 = []
-        for k2 in klist4:
-            insertionSort4 = Algorithm("insertionSort", input4, k2)
-            insertionSort4.insertionSort()
-            if k2 == k:
-                xinsert4.append(insertionSort4.elapsedTime)
-            x1.append(insertionSort4.elapsedTime)
-
-        xs4.append(x1)
-        # xinsert4.append(insertionSort4.counter)
+    xinsert4, xs4 = insertionLoop(input_dup, k)
 
     avgArray = averageInput(ns)
     xinsert5 = []
@@ -722,10 +676,10 @@ def main():
     generalComparision(k, inputs, ns)
 
     # comparison based on different k values
-    plotvsforK(ns, [r1[0], r2[0]], ["insertion", "merge"], k,"Random")
-    plotvsforK(ns, [r1[1], r2[1]], ["insertion", "merge"], k,"Sorted")
-    plotvsforK(ns, [r1[2], r2[2]], ["insertion", "merge"], k,"Reversed Sorted")
-    plotvsforK(ns, [r1[3], r2[3]], ["insertion", "merge"], k,"Duplicate")
+    plotvsforK(ns, [r1[0], r2[0]], ["insertion", "merge"], k, "Random")
+    plotvsforK(ns, [r1[1], r2[1]], ["insertion", "merge"], k, "Sorted")
+    plotvsforK(ns, [r1[2], r2[2]], ["insertion", "merge"], k, "Reversed Sorted")
+    plotvsforK(ns, [r1[3], r2[3]], ["insertion", "merge"], k, "Duplicate")
 
 
 if __name__ == "__main__":
