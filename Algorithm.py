@@ -1,7 +1,7 @@
-from MaxHeap import MaxHeap
 import numpy as np
 import time
 import math
+from heapq import heappop, heappush, heapify
 
 
 class Algorithm:
@@ -211,25 +211,24 @@ class Algorithm:
 
     def maxHeapSort(self):
         start_time = time.perf_counter()
+        # Creating empty heap
+        heap = []
+        heapify(heap)
 
-        maxHeap = MaxHeap(len(self.arr)+1)
+        # Adding items to the heap using heappush
+        # function by multiplying them with -1
+        for i in range(0, len(self.arr)):
+            heappush(heap, -1 * self.arr[i])
 
-        for arri in self.arr:
-            maxHeap.insert(arri)
-
-        n = len(self.arr)
-        i =0
-        while i != n-self.k:
-            maxHeap.extractMax()
-            i = i +1
-
-
+        for i in range(0, len(self.arr) - self.k):
+            element = heappop(heap)
 
         elapsed_time = time.perf_counter() - start_time
         self.elapsedTime = elapsed_time
+        self.setKthElement(-1 * heap[0])
 
-        self.setKthElement(maxHeap.getRoot())
-        maxHeap.Print()
+
+
 
 
 

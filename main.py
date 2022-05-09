@@ -20,9 +20,6 @@ import random
 
 # do not consider best or worst cases, just a random input for now
 def generateInputRandom(n):
-    # randnums = np.random.randint(1, 1000, n)
-    # return list(randnums)
-
     randarray = []
     i = 0
     while i != n:
@@ -34,9 +31,17 @@ def generateInputRandom(n):
     return randarray
 
 
+# do not consider best or worst cases, just a random input for now
+def generateInputRandom2(n):
+    randnums = np.random.randint(1, 1000, n)
+    return list(randnums)
+
+
 def inputsInt(list):
     inputs = []
-    n = 20
+
+    i = 0
+    n = 60
     for i in range(5):
         input_array = generateInputRandom(n)
         inputs.append(input_array)
@@ -102,32 +107,36 @@ def plotvsforK(ns, arr, names, k, arrType):
             i = i + 1
             # print(x1, y1)
             axis[x1, y1].set_title("k = " + str(k[j]))
-            axis[x1, y1].legend(loc='upper left')
+            #axis[x1, y1].legend(loc='upper left')
 
         x1, y1 = updatexandy(x1, y1, next)
 
     for ax in axis.flat:
         ax.set(xlabel='input size', ylabel='time')
 
-    name = "Comparison of different algorithms based on k values in " + arrType + " array"
+    name = "Comparison of different algorithms\nbased on k values in " + arrType + " array"
     figure.suptitle(name)
     plt.tight_layout()
+    lines, labels = figure.axes[-1].get_legend_handles_labels()
+    figure.legend(lines, labels, loc="upper left",fontsize = 'x-small',labelspacing=0.)
+
     # plt.show()
-    print(name)
-    filename = name + ".png"
+    filename = "Comparison of different algorithms based on k values in " + arrType + " array" + ".png"
     print(filename)
     plt.savefig(filename)
     plt.close()
 
 
 def plotSort(ns, xinsert, sortname):
+
+    print("plotting ",sortname)
     plt.figure(1)
 
-    plt.plot(ns, xinsert[0], 's-', label=sortname + '- None')
-    plt.plot(ns, xinsert[1], 's-', label=sortname + '- Sorted')
-    plt.plot(ns, xinsert[2], 's-', label=sortname + '- Reverse Sorted')
-    plt.plot(ns, xinsert[3], 's-', label=sortname + '- Duplicate')
-    plt.plot(ns, xinsert[4], 's-', label=sortname + '- Average')
+    plt.plot(ns, xinsert[0], 's-', label='Distinct random')
+    plt.plot(ns, xinsert[1], 's-', label='Sorted')
+    plt.plot(ns, xinsert[2], 's-', label='Reverse Sorted')
+    plt.plot(ns, xinsert[3], 's-', label='Duplicate')
+    plt.plot(ns, xinsert[4], 's-', label='Average')
 
     plt.legend(loc='upper left')
     plt.xlabel('input size')
@@ -157,7 +166,7 @@ def updatexandy(x1, y1, next):
 
 
 def convert(xlist, ns, name):
-    types = ["random list", "sorted list", "reversed sorted list", "duplicate list"]
+    types = ["Distinct random", "Sorted", "Reverse sorted", "Duplicate"]
     k = 0
     figure, axis = plt.subplots(2, 2)
     x1 = 0
@@ -190,10 +199,7 @@ def convert(xlist, ns, name):
         axis[x1, y1].plot(ns, n2, 's-', label='k=3')
         axis[x1, y1].plot(ns, n3, 's-', label='k=n/2')
         axis[x1, y1].plot(ns, n4, 's-', label='k=n')
-
-        axis[x1, y1].legend(loc='upper left')
         axis[x1, y1].set_title(types[k])
-
         x1, y1 = updatexandy(x1, y1, next)
 
         k = k + 1
@@ -202,12 +208,15 @@ def convert(xlist, ns, name):
     for ax in axis.flat:
         ax.set(xlabel='input size', ylabel='time')
 
-    figure.suptitle("Different k values of " + name + ' with different inputs')
+    figure.suptitle("Different k values of " + name + '\nwith different inputs')
     plt.tight_layout()
-    plt.show()
+    lines, labels = figure.axes[-1].get_legend_handles_labels()
+    figure.legend(lines, labels, loc='upper left', labelspacing=0.)
+
+    # plt.show()
     # print(name)
-    # filename = "Different k values of " + name + " with different inputs" + ".png"
-    # plt.savefig(filename)
+    filename = "Different k values of " + name + " with different inputs" + ".png"
+    plt.savefig(filename)
     plt.close()
 
     return arr_ret
@@ -269,7 +278,7 @@ def insertionSortAnalysis(k, inputs, ns):
         xinsertlist.append(xinsert3)  # reversed sorted
         xinsertlist.append(xinsert4)  # duplicate
         xinsertlist.append(xinsert5)  # average
-        plotSort(ns, xinsertlist, "Insertion Sort")
+        plotSort(ns, xinsertlist, "Insertion-Sort")
 
 
 def mergesortLoop(inputs, k):
@@ -320,7 +329,7 @@ def mergesortAnalyis(k, inputs, ns):
     xmergelist.append(xmerge3)
     xmergelist.append(xmerge4)
     xmergelist.append(xmerge5)
-    plotSort(ns, xmergelist, "Merge Sort")
+    plotSort(ns, xmergelist, "Merge-Sort")
 
 
 def quicksortLoop(inputs, k):
@@ -373,7 +382,7 @@ def quicksortAnalyis(k, inputs, ns):
     xquicklist.append(xquick3 )
     xquicklist.append(xquick4)
     xquicklist.append(xquick5)
-    plotSort(ns, xquicklist, "Quick Sort")
+    plotSort(ns, xquicklist, "Quick-Sort")
 
 
 def partialSelectionSortLoop(inputs, k):
@@ -386,7 +395,6 @@ def partialSelectionSortLoop(inputs, k):
         for k2 in klist:
 
             input_k = input.copy()
-
             partialSelectionSort = Algorithm("partialSelectionSort", input_k, k2)
             partialSelectionSort.partialSelectionSort()
             if k2 == k:
@@ -434,7 +442,7 @@ def partialSelectionSortAnalyis(k, inputs, ns):
     xplist.append(xp3)
     xplist.append(xp4)
     xplist.append(xp5)
-    plotSort(ns, xplist, "Partial-Selection-Sort")
+    plotSort(ns, xplist, "Partial Selection-Sort")
 
     # Plot for only this sort algorithm when k = [1,k,n/2,n] for every array type
     # Ex: Random array (xs) --> comparision when k=1,k=3,k=n/2,k=n
@@ -443,7 +451,7 @@ def partialSelectionSortAnalyis(k, inputs, ns):
     klistfinal.append(xs2)
     klistfinal.append(xs3)
     klistfinal.append(xs4)
-    randomn4 = convert(klistfinal, ns, "partialSelectionSort")
+    randomn4 = convert(klistfinal, ns, "Partial Selection-Sort")
     return randomn4
 
 
@@ -506,7 +514,7 @@ def quickselectsortAnalyis(k, inputs, ns, fun_type):
     xselectlist.append(xselect4)
     xselectlist.append(xselect5)
     name = "Quick Select: " + fun_type
-    plotSort(ns, xselectlist, f"Quick Select {fun_type}")
+    plotSort(ns, xselectlist, f"Quick Select - {fun_type}")
 
     # Plot for only quick sort when k = [1,k,n/2,n] for every array type
     # Ex: Random array (xs) --> comparision when k=1,k=3,k=n/2,k=n
@@ -515,7 +523,7 @@ def quickselectsortAnalyis(k, inputs, ns, fun_type):
     klistfinal.append(xs2)
     klistfinal.append(xs3)
     klistfinal.append(xs4)
-    randomn6 = convert(klistfinal, ns, f"Quick Select {fun_type}")
+    randomn6 = convert(klistfinal, ns, f"Quick Select - {fun_type}")
     return randomn6
 
 
@@ -576,7 +584,7 @@ def partialHeapSortAnalysis(k, inputs, ns):
     xplist.append(xp3)
     xplist.append(xp4)
     xplist.append(xp5)
-    plotSort(ns, xplist, "PartialHeapSort")
+    plotSort(ns, xplist, "Partial Heap-Sort")
 
     # Plot for only this sort algorithm when k = [1,k,n/2,n] for every array type
     # Ex: Random array (xs) --> comparision when k=1,k=3,k=n/2,k=n
@@ -585,7 +593,7 @@ def partialHeapSortAnalysis(k, inputs, ns):
     klistfinal.append(xs2)
     klistfinal.append(xs3)
     klistfinal.append(xs4)
-    randomn5 = convert(klistfinal, ns, "PartialHeapSort")
+    randomn5 = convert(klistfinal, ns, "Partial Heap-Sort")
     return randomn5
 
 
@@ -652,13 +660,13 @@ def generalComparision(k, inputs, ns):
         gx.append(maxHeapSort.elapsedTime)
 
         # Plot - comparision of all
-    plt.plot(ns, ax, 's-', label='insertionSort')
-    plt.plot(ns, bx, 's-', label='mergeSort')
-    plt.plot(ns, cx, 's-', label='quickSort')
-    plt.plot(ns, dx, 's-', label='partialSelectionSort')
-    plt.plot(ns, ex, 's-', label='quickSelect')
-    plt.plot(ns, fx, 's-', label='quickSelectwithmedian')
-    plt.plot(ns, gx, 's-', label='maxHeapSort')
+    plt.plot(ns, ax, 's-', label='Insertion-sort')
+    plt.plot(ns, bx, 's-', label='Merge-sort')
+    plt.plot(ns, cx, 's-', label='Quick-sort')
+    plt.plot(ns, dx, 's-', label='Partial Selection-sort')
+    plt.plot(ns, ex, 's-', label='Quick Select')
+    plt.plot(ns, fx, 's-', label='Quick Select with median of three')
+    plt.plot(ns, gx, 's-', label='Partial Heap-sort')
 
     # plt.ylim([0, 0.02])
     plt.legend(loc='upper left')
@@ -666,8 +674,8 @@ def generalComparision(k, inputs, ns):
     plt.ylabel('time')
     plt.title("Comparision of Algorithms")
 
-    plt.show()
-    #plt.savefig('n-vs-time.png')
+    #plt.show()
+    plt.savefig('n-vs-time.png')
     plt.close()
 
 
@@ -678,9 +686,8 @@ def main():
     inputs = inputsInt(ns)
 
     k = 3
-    rs = []
-    # algorithms analysis
 
+    # algorithms analysis
     inputs_k = inputs.copy()
     insertionSortAnalysis(k, inputs_k, ns)
     shufflethearrays(inputs)
@@ -695,35 +702,30 @@ def main():
 
     inputs_k = inputs.copy()
     r4 = partialSelectionSortAnalyis(k, inputs_k, ns)
-    rs.append(r4)
     shufflethearrays(inputs)
 
     inputs_k = inputs.copy()
-    r5 = quickselectsortAnalyis(k, inputs_k, ns, "none")
-    rs.append(r5)
-    shufflethearrays(inputs)
+    r5 = quickselectsortAnalyis(k, inputs_k, ns, "first")
 
+    shufflethearrays(inputs)
     inputs_k = inputs.copy()
     r6 = quickselectsortAnalyis(k, inputs_k, ns, "median")
-    rs.append(r6)
-    shufflethearrays(inputs)
 
-    # r7 = partialHeapSortAnalysis(k, inputs, ns)
-    # r7.append(r5)
-    # shufflethearrays(inputs)
+    shufflethearrays(inputs)
+    r7 = partialHeapSortAnalysis(k, inputs, ns)
+    shufflethearrays(inputs)
 
     # comparision together
     inputs_k = inputs.copy()
     generalComparision(k, inputs_k, ns)
 
-    array_types = ["partial selection", "quick select", "quick select with median"]
+    array_types = ["Partial Selection-sort", "Quick Select", "Quick Select with median of three","Partial Heap-sort"]
     # comparison based on different k values
 
-    plotvsforK(ns, [r4[0], r5[0], r6[0]], array_types, k, "Random")
-    plotvsforK(ns, [r4[1], r5[1], r6[1]], array_types, k, "Sorted")
-    plotvsforK(ns, [r4[2], r5[2], r6[2]], array_types, k, "Reversed Sorted")
-    plotvsforK(ns, [r4[3], r5[3], r6[3]], array_types, k, "Duplicate")
-
+    plotvsforK(ns, [r4[0], r5[0], r6[0],r7[0]], array_types, k, "Random")
+    plotvsforK(ns, [r4[1], r5[1], r6[1],r7[1]], array_types, k, "Sorted")
+    plotvsforK(ns, [r4[2], r5[2], r6[2],r7[2]], array_types, k, "Reverse Sorted")
+    plotvsforK(ns, [r4[3], r5[3], r6[3],r7[3]], array_types, k, "Duplicate")
 
 if __name__ == "__main__":
     main()
