@@ -1,7 +1,7 @@
-from MaxHeap import MaxHeap
 import numpy as np
 import time
 import math
+from heapq import heappop, heappush, heapify
 
 
 class Algorithm:
@@ -16,9 +16,8 @@ class Algorithm:
 
     # Function to do insertion sort (1)
 
-    def setKthElement(self,value):
+    def setKthElement(self, value):
         self.kthsmallest = value
-
 
     def insertionSort(self):
         # Traverse through 1 to len(arr)
@@ -38,12 +37,12 @@ class Algorithm:
             self.arr[j + 1] = key
 
         elapsed_time = time.perf_counter() - start_time
-        self.setKthElement(self.arr[self.k-1])
+        self.setKthElement(self.arr[self.k - 1])
         self.elapsedTime = elapsed_time
 
         # Python program for implementation of MergeSort (2)
 
-    def mergeSort(self,arr):
+    def mergeSort(self, arr):
         start_time = time.perf_counter()
         if len(arr) > 1:
             # Finding the mid of the array
@@ -89,15 +88,14 @@ class Algorithm:
         self.elapsedTime = elapsed_time
         return arr
 
-
     def mergeFinal(self):
         self.arr = self.mergeSort(self.arr)
         self.setKthElement(self.arr[self.k - 1])
 
-    def swap(self,list, pos1, pos2):
+    def swap(self, list, pos1, pos2):
         list[pos1], list[pos2] = list[pos2], list[pos1]
 
-    def quicksort(self,arr, left, right, pivot):
+    def quicksort(self, arr, left, right, pivot):
         # pivot = 0;
         start_time = time.perf_counter()
         if left < right:
@@ -110,7 +108,7 @@ class Algorithm:
         elapsed_time = time.perf_counter() - start_time
         self.elapsedTime = elapsed_time
 
-    def getMedian(self,arr, left, right):
+    def getMedian(self, arr, left, right):
         center = math.ceil((left + right) / 2);
         if arr[left] > arr[center]:
             self.swap(arr, left, center)
@@ -181,7 +179,7 @@ class Algorithm:
         # kth smallest element in the array.
         # ASSUMPTION: all elements in arr[] are distinct  (7)
 
-    def quickSelect(self,arr, l, r, k, type):
+    def quickSelect(self, arr, l, r, k, type):
         # if k is smaller than number of
         # elements in array
         start_time = time.perf_counter()
@@ -210,17 +208,29 @@ class Algorithm:
             # Else recur for right subarray
             return self.quickSelect(arr, index + 1, r, k - index + l - 1, type)
         print("Index out of bound")
-    
+
+
     def maxHeapSort(self):
-        maxHeap = MaxHeap(len(self.arr))
+        start_time = time.perf_counter()
+        # Creating empty heap
+        heap = []
+        heapify(heap)
 
+        # Adding items to the heap using heappush
+        # function by multiplying them with -1
         for i in range(0, len(self.arr)):
-            maxHeap.insert(self.arr[i])
+            heappush(heap, -1 * self.arr[i])
 
-        for i in range(len(self.arr) - self.k + 1):
-            maxHeap.extractMax()
-        
-        print("The Max val is " + maxHeap.getRoot())
+        for i in range(0, len(self.arr) - self.k):
+            element = heappop(heap)
+
+        elapsed_time = time.perf_counter() - start_time
+        self.elapsedTime = elapsed_time
+        self.setKthElement(-1 * heap[0])
+
+
         
 
         
+      
+       
