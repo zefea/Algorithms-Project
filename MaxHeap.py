@@ -41,9 +41,6 @@ class MaxHeap:
             return True
         return False
 
-    def getRoot(self):
-        return str(self.Heap[self.FRONT])
-
     # Function to swap two nodes of the heap
     def swap(self, fpos, spos):
 
@@ -87,6 +84,14 @@ class MaxHeap:
             self.swap(current, self.parent(current))
             current = self.parent(current)
 
+    # Function to print the contents of the heap
+    def Print(self):
+
+        for i in range(1, (self.size // 2) + 1):
+            print(" PARENT : " + str(self.Heap[i]) +
+                  " LEFT CHILD : " + str(self.Heap[2 * i]) +
+                  " RIGHT CHILD : " + str(self.Heap[2 * i + 1]))
+
     # Function to remove and return the maximum
     # element from the heap
     def extractMax(self):
@@ -97,3 +102,7 @@ class MaxHeap:
         self.maxHeapify(self.FRONT)
 
         return popped
+
+    def getRoot(self):
+        return str(self.Heap[self.FRONT])
+

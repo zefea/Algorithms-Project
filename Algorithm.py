@@ -210,14 +210,26 @@ class Algorithm:
         print("Index out of bound")
 
     def maxHeapSort(self):
-        maxHeap = MaxHeap(len(self.arr))
+        start_time = time.perf_counter()
 
-        for i in range(0, len(self.arr)):
-            maxHeap.insert(self.arr[i])
+        maxHeap = MaxHeap(len(self.arr)+1)
 
-        for i in range(len(self.arr) - self.k + 1):
+        for arri in self.arr:
+            maxHeap.insert(arri)
+
+        n = len(self.arr)
+        i =0
+        while i != n-self.k:
             maxHeap.extractMax()
+            i = i +1
 
-        print("The Max val is " + maxHeap.getRoot())
+
+
+        elapsed_time = time.perf_counter() - start_time
+        self.elapsedTime = elapsed_time
+
+        self.setKthElement(maxHeap.getRoot())
+        maxHeap.Print()
+
 
 
