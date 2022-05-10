@@ -196,7 +196,7 @@ def convert(xlist, ns, name):
         plt.figure(1)
         # print(x1, "and", y1)
         axis[x1, y1].plot(ns, n1, 's-', label='k=1')
-        axis[x1, y1].plot(ns, n2, 's-', label='k=3')
+        # axis[x1, y1].plot(ns, n2, 's-', label='k=3')
         axis[x1, y1].plot(ns, n3, 's-', label='k=n/2')
         axis[x1, y1].plot(ns, n4, 's-', label='k=n')
         axis[x1, y1].set_title(types[k])
@@ -241,7 +241,7 @@ def insertionSortAnalysis(k, inputs, ns):
     input_sorted = inputs.copy()
     input_reversed = inputs.copy()
     xinsertlist = []
-    with open('output.txt', 'w') as f:
+    with open('insertion.txt', 'w') as f:
         f.write("Insertion Sort Analyis\n")
 
         f.write("\n--------------------------------- INITIAL ARRAY ---------------------------------\n")
@@ -281,13 +281,16 @@ def insertionSortAnalysis(k, inputs, ns):
         plotSort(ns, xinsertlist, "Insertion-Sort")
 
 
-def mergesortLoop(inputs, k):
+def mergesortLoop(inputs, k,f):
     xmerge = []
 
     for input in inputs:
+        f.write("\nn= " + str(len(input)))
+        f.write("\ninput: \n" + str(input))
         mergeSort = Algorithm("mergeSort", input, k)
         mergeSort.mergeFinal()
         xmerge.append(mergeSort.elapsedTime)
+        f.write("\nelapsed times: \n" + str(mergeSort.elapsedTime))
         # xmerge.append(mergeSort.counter)
 
     return xmerge
@@ -296,50 +299,57 @@ def mergesortLoop(inputs, k):
 def mergesortAnalyis(k, inputs, ns):
     input_sorted = inputs.copy()
     input_reversed = inputs.copy()
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xmerge = mergesortLoop(inputs, k)
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    sortthearrays(input_sorted)
-    xmerge2 = mergesortLoop(input_sorted, k)
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    reversedsortthearrays(input_reversed)
-    xmerge3 = mergesortLoop(input_reversed, k)
-    # --------------------------------- DUPLICATE ARRAY ---------------------------------
-    input_dup = duplicateInput(ns)
-    xmerge4 = mergesortLoop(input_dup, k)
-    # --------------------------------- AVERAGE ---------------------------------
-    avgArray = averageInput(ns)
-    xmerge5 = []
-    avg = 0
-    for input_avg in avgArray:
-        s = len(input_avg)
-        for input5 in input_avg:
-            # k = len(input4) - 1
-            mergeSort5 = Algorithm("mergeSort", input5, k)
-            mergeSort5.mergeFinal()
-            avg = avg + mergeSort5.elapsedTime
-            # avg = avg + mergeSort5.counter
+    with open('merge.txt', 'w') as f:
+        f.write("Merge Sort Analyis\n")
+        f.write("\n--------------------------------- INITIAL ARRAY ---------------------------------\n")
+        xmerge = mergesortLoop(inputs, k,f)
+        f.write("\n--------------------------------- SORTED ARRAY ---------------------------------\n")
+        sortthearrays(input_sorted)
+        xmerge2 = mergesortLoop(input_sorted, k,f)
+        f.write("\n--------------------------------- REVERSED SORTED ARRAY ---------------------------------\n")
+        reversedsortthearrays(input_reversed)
+        xmerge3 = mergesortLoop(input_reversed, k,f)
+        f.write("\n--------------------------------- DUPLICATE ARRAY ---------------------------------\n")
+        input_dup = duplicateInput(ns)
+        xmerge4 = mergesortLoop(input_dup, k,f)
+        f.write("\n--------------------------------- AVERAGE ---------------------------------\n")
+        avgArray = averageInput(ns)
+        xmerge5 = []
+        avg = 0
+        for input_avg in avgArray:
+            s = len(input_avg)
+            for input5 in input_avg:
+                # k = len(input4) - 1
+                mergeSort5 = Algorithm("mergeSort", input5, k)
+                mergeSort5.mergeFinal()
+                avg = avg + mergeSort5.elapsedTime
+                # avg = avg + mergeSort5.counter
 
-        xmerge5.append(avg / s)
+            xmerge5.append(avg / s)
 
-    # Plot for only merge sort when k=given parameter (e.g. k=3)
-    xmergelist = []
-    xmergelist.append(xmerge)
-    xmergelist.append(xmerge2)
-    xmergelist.append(xmerge3)
-    xmergelist.append(xmerge4)
-    xmergelist.append(xmerge5)
-    plotSort(ns, xmergelist, "Merge-Sort")
+        f.write("\nAverage when k:" + str(k))
+        f.write("\nelapsed times: \n" + str(xmerge5))
+        # Plot for only merge sort when k=given parameter (e.g. k=3)
+        xmergelist = []
+        xmergelist.append(xmerge)
+        xmergelist.append(xmerge2)
+        xmergelist.append(xmerge3)
+        xmergelist.append(xmerge4)
+        xmergelist.append(xmerge5)
+        plotSort(ns, xmergelist, "Merge-Sort")
 
 
-def quicksortLoop(inputs, k):
+def quicksortLoop(inputs, k,f):
     xquick = []
 
     for input in inputs:
+        f.write("\nn= " + str(len(input)))
+        f.write("\ninput: \n" + str(input))
         n = len(input)
         quicksort = Algorithm("quicksort", input, k)
         quicksort.quicksort(input, 0, n - 1, 0)
         xquick.append(quicksort.elapsedTime)
+        f.write("\nelapsed times: \n" + str(quicksort.elapsedTime))
         # xquick.append(quicksort.counter)
 
     return xquick
@@ -348,52 +358,58 @@ def quicksortLoop(inputs, k):
 def quicksortAnalyis(k, inputs, ns):
     input_sorted = inputs.copy()
     input_reversed = inputs.copy()
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xquick = quicksortLoop(inputs, k)
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    sortthearrays(input_sorted)
-    xquick2 = quicksortLoop(input_sorted, k)
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    reversedsortthearrays(input_reversed)
-    xquick3 = quicksortLoop(input_reversed, k)
-    # --------------------------------- DUPLICATE ARRAY ---------------------------------
-    input_dup = duplicateInput(ns)
-    xquick4 = quicksortLoop(input_dup, k)
-    # --------------------------------- AVERAGE ---------------------------------
-    avgArray = averageInput(ns)
-    xquick5 = []
-    avg = 0
-    for input_avg in avgArray:
-        s = len(input_avg)
-        for input5 in input_avg:
-            # k = len(input4) - 1
-            n = len(input5)
-            quicksort5 = Algorithm("quicksort", input5, k)
-            quicksort5.quicksort(input5, 0, n - 1, 0)
-            avg = avg + quicksort5.elapsedTime
-            # avg = avg + quicksort5.counter
+    with open('quicksort.txt', 'w') as f:
+        f.write("Quick Sort Analyis\n")
+        f.write("\n--------------------------------- INITIAL ARRAY ---------------------------------\n")
+        xquick = quicksortLoop(inputs, k,f)
+        f.write("\n--------------------------------- SORTED ARRAY ---------------------------------\n")
+        sortthearrays(input_sorted)
+        xquick2 = quicksortLoop(input_sorted, k,f)
+        f.write("\n--------------------------------- REVERSED SORTED ARRAY ---------------------------------\n")
+        reversedsortthearrays(input_reversed)
+        xquick3 = quicksortLoop(input_reversed, k,f)
+        f.write("\n---------------------------------DUPLICATE ARRAY ---------------------------------\n")
+        input_dup = duplicateInput(ns)
+        xquick4 = quicksortLoop(input_dup, k,f)
+        f.write("\n--------------------------------- AVERAGE ---------------------------------\n")
+        avgArray = averageInput(ns)
+        xquick5 = []
+        avg = 0
+        for input_avg in avgArray:
+            s = len(input_avg)
+            for input5 in input_avg:
+                # k = len(input4) - 1
+                n = len(input5)
+                quicksort5 = Algorithm("quicksort", input5, k)
+                quicksort5.quicksort(input5, 0, n - 1, 0)
+                avg = avg + quicksort5.elapsedTime
+                # avg = avg + quicksort5.counter
 
-        xquick5.append(avg / s)
+            xquick5.append(avg / s)
 
-    # Plot for only quick sort when k=given parameter (e.g. k=3)
-    xquicklist = []
-    xquicklist.append(xquick)
-    xquicklist.append(xquick2)
-    xquicklist.append(xquick3 )
-    xquicklist.append(xquick4)
-    xquicklist.append(xquick5)
-    plotSort(ns, xquicklist, "Quick-Sort")
+        f.write("\nAverage when k:" + str(k))
+        f.write("\nelapsed times: \n" + str(xquick5))
+        # Plot for only quick sort when k=given parameter (e.g. k=3)
+        xquicklist = []
+        xquicklist.append(xquick)
+        xquicklist.append(xquick2)
+        xquicklist.append(xquick3 )
+        xquicklist.append(xquick4)
+        xquicklist.append(xquick5)
+        plotSort(ns, xquicklist, "Quick-Sort")
 
 
-def partialSelectionSortLoop(inputs, k):
+def partialSelectionSortLoop(inputs, k,f):
     xp = []
     xs = []
     for input in inputs:
+        f.write("\nn= " + str(len(input)))
+        f.write("\ninput: \n" + str(input))
         n = len(input)
         klist = [1, k, int(n / 2), n]
         x1 = []
         for k2 in klist:
-
+            f.write("\nk= " + str(k2))
             input_k = input.copy()
             partialSelectionSort = Algorithm("partialSelectionSort", input_k, k2)
             partialSelectionSort.partialSelectionSort()
@@ -401,6 +417,7 @@ def partialSelectionSortLoop(inputs, k):
                 xp.append(partialSelectionSort.elapsedTime)
 
             x1.append(partialSelectionSort.elapsedTime)
+            f.write("\nelapsed times: \n" + str(partialSelectionSort.elapsedTime))
         xs.append(x1)
 
     return xp, xs
@@ -409,40 +426,44 @@ def partialSelectionSortLoop(inputs, k):
 def partialSelectionSortAnalyis(k, inputs, ns):
     input_sorted = inputs.copy()
     input_reversed = inputs.copy()
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xp, xs = partialSelectionSortLoop(inputs, k)
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    sortthearrays(input_sorted)
-    xp2, xs2 = partialSelectionSortLoop(input_sorted, k)
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    reversedsortthearrays(input_reversed)
-    xp3, xs3 = partialSelectionSortLoop(input_reversed, k)
-    # --------------------------------- DUPLICATE ARRAY ---------------------------------
-    input_dup = duplicateInput(ns)
-    xp4, xs4 = partialSelectionSortLoop(input_dup, k)
+    with open('partialSelectionSort.txt', 'w') as f:
+        f.write("partialSelectionSort anaylsis\n")
+        f.write("\n--------------------------------- INITIAL ARRAY ---------------------------------\n")
+        xp, xs = partialSelectionSortLoop(inputs, k,f)
+        f.write("\n--------------------------------- SORTED ARRAY ---------------------------------\n")
+        sortthearrays(input_sorted)
+        xp2, xs2 = partialSelectionSortLoop(input_sorted, k,f)
+        f.write("\n--------------------------------- REVERSED SORTED ARRAY ---------------------------------\n")
+        reversedsortthearrays(input_reversed)
+        xp3, xs3 = partialSelectionSortLoop(input_reversed, k,f)
+        f.write("\n--------------------------------- DUPLICATE ARRAY ---------------------------------\n")
+        input_dup = duplicateInput(ns)
+        xp4, xs4 = partialSelectionSortLoop(input_dup, k,f)
 
-    # --------------------------------- AVERAGE ---------------------------------
-    avgArray = averageInput(ns)
-    xp5 = []
-    avg = 0
-    for input_avg in avgArray:
-        s = len(input_avg)
-        for input5 in input_avg:
-            n = len(input5)
-            partialSelectionSort5 = Algorithm("partialSelectionSort", input5, k)
-            partialSelectionSort5.partialSelectionSort()
-            avg = avg + partialSelectionSort5.elapsedTime
-            # avg = avg + partialSelectionSort5.counter
+        f.write("\n--------------------------------- AVERAGE ---------------------------------\n")
+        avgArray = averageInput(ns)
+        xp5 = []
+        avg = 0
+        for input_avg in avgArray:
+            s = len(input_avg)
+            for input5 in input_avg:
+                n = len(input5)
+                partialSelectionSort5 = Algorithm("partialSelectionSort", input5, k)
+                partialSelectionSort5.partialSelectionSort()
+                avg = avg + partialSelectionSort5.elapsedTime
+                # avg = avg + partialSelectionSort5.counter
 
-        xp5.append(avg / s)
+            xp5.append(avg / s)
 
-    xplist = []
-    xplist.append(xp)
-    xplist.append(xp2)
-    xplist.append(xp3)
-    xplist.append(xp4)
-    xplist.append(xp5)
-    plotSort(ns, xplist, "Partial Selection-Sort")
+        f.write("\nAverage when k:" + str(k))
+        f.write("\nelapsed times: \n" + str(xp5))
+        xplist = []
+        xplist.append(xp)
+        xplist.append(xp2)
+        xplist.append(xp3)
+        xplist.append(xp4)
+        xplist.append(xp5)
+        plotSort(ns, xplist, "Partial Selection-Sort")
 
     # Plot for only this sort algorithm when k = [1,k,n/2,n] for every array type
     # Ex: Random array (xs) --> comparision when k=1,k=3,k=n/2,k=n
@@ -527,15 +548,18 @@ def quickselectsortAnalyis(k, inputs, ns, fun_type):
     return randomn6
 
 
-def heapLoop(inputs, k):
+def heapLoop(inputs, k,f):
     xp = []
     xs = []
     for input in inputs:
+        f.write("\nn= " + str(len(input)))
+        f.write("\ninput: \n" + str(input))
         n = len(input)
         klist = [1, k, int(n / 2), n]
         x1 = []
         for k2 in klist:
             input_k = input.copy()
+            f.write("\nk:" + str(k2))
             maxHeapSort = Algorithm("PartialHeapSort", input_k, k2)
             maxHeapSort.maxHeapSort()
             if k2 == k:
@@ -543,6 +567,7 @@ def heapLoop(inputs, k):
 
             x1.append(maxHeapSort.elapsedTime)
             # xinsert.append(insertionSort.counter)
+            f.write("\nelapsed times: \n" + str(maxHeapSort.elapsedTime))
         xs.append(x1)
 
     return xp, xs
@@ -551,40 +576,44 @@ def heapLoop(inputs, k):
 def partialHeapSortAnalysis(k, inputs, ns):
     input_sorted = inputs.copy()
     input_reversed = inputs.copy()
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xp, xs = heapLoop(inputs, k)
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    sortthearrays(input_sorted)
-    xp2, xs2 = heapLoop(input_sorted, k)
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    reversedsortthearrays(input_reversed)
-    xp3, xs3 = heapLoop(input_reversed, k)
-    # --------------------------------- DUPLICATE ARRAY ---------------------------------
-    input_dup = duplicateInput(ns)
-    xp4, xs4 = heapLoop(input_dup, k)
+    with open('Partial Heap-Sort.txt', 'w') as f:
+        f.write("Partial Heap-Sort Analyis\n")
+        f.write("\n--------------------------------- INITIAL ARRAY ---------------------------------\n")
+        xp, xs = heapLoop(inputs, k,f)
+        f.write("\n--------------------------------- SORTED ARRAY ---------------------------------\n")
+        sortthearrays(input_sorted)
+        xp2, xs2 = heapLoop(input_sorted, k,f)
+        f.write("\n--------------------------------- REVERSED SORTED ARRAY ---------------------------------\n")
+        reversedsortthearrays(input_reversed)
+        xp3, xs3 = heapLoop(input_reversed, k,f)
+        f.write("\n---------------------------------DUPLICATE ARRAY ---------------------------------\n")
+        input_dup = duplicateInput(ns)
+        xp4, xs4 = heapLoop(input_dup, k,f)
 
-    # --------------------------------- AVERAGE ---------------------------------
-    avgArray = averageInput(ns)
-    xp5 = []
-    avg = 0
-    for input_avg in avgArray:
-        s = len(input_avg)
-        for input5 in input_avg:
-            n = len(input5)
-            maxHeapSort5 = Algorithm("PartialHeapSort", input5, k)
-            maxHeapSort5.maxHeapSort()
-            avg = avg + maxHeapSort5.elapsedTime
-            # avg = avg + maxHeapSort5.counter
+        f.write("\n--------------------------------- AVERAGE ---------------------------------\n")
+        avgArray = averageInput(ns)
+        xp5 = []
+        avg = 0
+        for input_avg in avgArray:
+            s = len(input_avg)
+            for input5 in input_avg:
+                n = len(input5)
+                maxHeapSort5 = Algorithm("PartialHeapSort", input5, k)
+                maxHeapSort5.maxHeapSort()
+                avg = avg + maxHeapSort5.elapsedTime
+                # avg = avg + maxHeapSort5.counter
 
-        xp5.append(avg / s)
+            xp5.append(avg / s)
 
-    xplist = []
-    xplist.append(xp)
-    xplist.append(xp2)
-    xplist.append(xp3)
-    xplist.append(xp4)
-    xplist.append(xp5)
-    plotSort(ns, xplist, "Partial Heap-Sort")
+        f.write("\nAverage when k:" + str(k))
+        f.write("\nelapsed times: \n" + str(xp5))
+        xplist = []
+        xplist.append(xp)
+        xplist.append(xp2)
+        xplist.append(xp3)
+        xplist.append(xp4)
+        xplist.append(xp5)
+        plotSort(ns, xplist, "Partial Heap-Sort")
 
     # Plot for only this sort algorithm when k = [1,k,n/2,n] for every array type
     # Ex: Random array (xs) --> comparision when k=1,k=3,k=n/2,k=n
@@ -721,7 +750,7 @@ def main():
 
     array_types = ["Partial Selection-sort", "Quick Select", "Quick Select with median of three","Partial Heap-sort"]
     # comparison based on different k values
-
+    
     plotvsforK(ns, [r4[0], r5[0], r6[0],r7[0]], array_types, k, "Random")
     plotvsforK(ns, [r4[1], r5[1], r6[1],r7[1]], array_types, k, "Sorted")
     plotvsforK(ns, [r4[2], r5[2], r6[2],r7[2]], array_types, k, "Reverse Sorted")
