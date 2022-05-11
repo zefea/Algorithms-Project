@@ -114,35 +114,31 @@ def plotvsforK(ns, arr, names, k, arrType):
     # print(arr)
 
     k = [1, k, "n/2", "n"]
-    j = 0
-    x1 = 0
     y1 = 0
-    next = 0
 
-    figure, axis = plt.subplots(2, 2)
+    figure, axis = plt.subplots(1, 3)
     for j in range(4):
         i = 0
-        for ar in arr:
-            axis[x1, y1].plot(ns, arr[i][j], 's-', label=names[i])
-            i = i + 1
-            # print(x1, y1)
-            axis[x1, y1].set_title("k = " + str(k[j]))
-            # axis[x1, y1].legend(loc='upper left')
+        if j == 0 or j > 1:
+            for ar in arr:
+                axis[y1].plot(ns, ar[j], 's-', label=names[i])
+                i = i + 1
+                axis[y1].set_title("k = " + str(k[j]))
 
-        x1, y1 = updatexandy(x1, y1, next)
+            y1 = y1+1
 
     for ax in axis.flat:
         ax.set(xlabel='input size', ylabel='time')
 
     name = "Comparison of different algorithms\nbased on k values in " + arrType + " array"
     figure.suptitle(name)
-    plt.tight_layout()
     lines, labels = figure.axes[-1].get_legend_handles_labels()
-    figure.legend(lines, labels, loc="upper left", fontsize='x-small', labelspacing=0.)
+    figure.legend(lines, labels, loc="upper left", labelspacing=0.)
+    plt.tight_layout()
 
-    # plt.show()
     filename = "Comparison of different algorithms based on k values in " + arrType + " array" + ".png"
     print(filename)
+    # plt.show()
     plt.savefig(filename)
     plt.close()
 
@@ -518,14 +514,17 @@ def partialSelectionSortAnalyis(k, inputs, ns):
     return randomn4
 
 
-def quickselectLoop(inputs, k, type):
+def quickselectLoop(inputs, k, type,f):
     ex = []
     xs = []
     for input in inputs:
         n = len(input)
+        f.write("\nn= " + str(len(input)))
+        f.write("\ninput: \n" + str(input))
         klist = [1, k, int(n / 2), n]
         x1 = []
         for k2 in klist:
+            f.write("\nk= " + str(k2))
             input_k = input.copy()
             quickSelect = Algorithm("quickSelect", input_k, k2)
             quickSelect.quickSelect(input_k, 0, n - 1, k, type)
@@ -534,6 +533,7 @@ def quickselectLoop(inputs, k, type):
                 ex.append(quickSelect.elapsedTime)
 
             x1.append(quickSelect.elapsedTime)
+            f.write("\nelapsed times: \n" + str(quickSelect.elapsedTime))
         xs.append(x1)
         # xquick.append(quicksort.counter)
     return ex, xs
@@ -542,43 +542,47 @@ def quickselectLoop(inputs, k, type):
 def quickselectsortAnalyis(k, inputs, ns, fun_type):
     input_sorted = inputs.copy()
     input_reversed = inputs.copy()
+    filename = "quickselectsort "+fun_type+".txt"
+    with open(filename, 'w') as f:
+        f.write("quickselectsort anaylsis\n")
+        f.write("\n--------------------------------- INITIAL ARRAY ---------------------------------\n")
+        xselect, xs = quickselectLoop(inputs, k, fun_type,f)
+        f.write("\n--------------------------------- SORTED ARRAY ---------------------------------\n")
+        sortthearrays(input_sorted)
+        xselect2, xs2 = quickselectLoop(input_sorted, k, fun_type,f)
+        f.write("\n--------------------------------- REVERSED SORTED ARRAY ---------------------------------\n")
+        reversedsortthearrays(input_reversed)
+        xselect3, xs3 = quickselectLoop(input_reversed, k, fun_type,f)
+        f.write("\n---------------------------------DUPLICATE ARRAY ---------------------------------\n")
+        input_dup = duplicateInput(ns)
+        xselect4, xs4 = quickselectLoop(input_dup, k, fun_type,f)
+        f.write("\n--------------------------------- AVERAGE ---------------------------------\n")
+        avgArray = averageInput(ns)
+        xselect5 = []
+        avg = 0
+        for input_avg in avgArray:
+            s = len(input_avg)
+            for input5 in input_avg:
+                # k = len(input4) - 1
+                n = len(input5)
+                quickSelect = Algorithm("quickSelect", input5, k)
+                quickSelect.quickSelect(input5, 0, n - 1, k, fun_type)
+                avg = avg + quickSelect.elapsedTime
+                # avg = avg + quicksort5.counter
 
-    # --------------------------------- INITIAL ARRAY ---------------------------------
-    xselect, xs = quickselectLoop(inputs, k, fun_type)
-    # --------------------------------- SORTED ARRAY ---------------------------------
-    sortthearrays(input_sorted)
-    xselect2, xs2 = quickselectLoop(input_sorted, k, fun_type)
-    # --------------------------------- REVERSED SORTED ARRAY ---------------------------------
-    reversedsortthearrays(input_reversed)
-    xselect3, xs3 = quickselectLoop(input_reversed, k, fun_type)
-    # --------------------------------- DUPLICATE ARRAY ---------------------------------
-    input_dup = duplicateInput(ns)
-    xselect4, xs4 = quickselectLoop(input_dup, k, fun_type)
-    # --------------------------------- AVERAGE ---------------------------------
-    avgArray = averageInput(ns)
-    xselect5 = []
-    avg = 0
-    for input_avg in avgArray:
-        s = len(input_avg)
-        for input5 in input_avg:
-            # k = len(input4) - 1
-            n = len(input5)
-            quickSelect = Algorithm("quickSelect", input5, k)
-            quickSelect.quickSelect(input5, 0, n - 1, k, fun_type)
-            avg = avg + quickSelect.elapsedTime
-            # avg = avg + quicksort5.counter
+            xselect5.append(avg / s)
 
-        xselect5.append(avg / s)
-
-    # Plot for only quick sort when k=given parameter (e.g. k=3)
-    xselectlist = []
-    xselectlist.append(xselect)
-    xselectlist.append(xselect2)
-    xselectlist.append(xselect3)
-    xselectlist.append(xselect4)
-    xselectlist.append(xselect5)
-    name = "Quick Select: " + fun_type
-    plotSort(ns, xselectlist, f"Quick Select - {fun_type}")
+        f.write("\nAverage when k:" + str(k))
+        f.write("\nelapsed times: \n" + str(xselect5))
+        # Plot for only quick sort when k=given parameter (e.g. k=3)
+        xselectlist = []
+        xselectlist.append(xselect)
+        xselectlist.append(xselect2)
+        xselectlist.append(xselect3)
+        xselectlist.append(xselect4)
+        xselectlist.append(xselect5)
+        name = "Quick Select: " + fun_type
+        plotSort(ns, xselectlist, f"Quick Select - {fun_type}")
 
     # Plot for only quick sort when k = [1,k,n/2,n] for every array type
     # Ex: Random array (xs) --> comparision when k=1,k=3,k=n/2,k=n
@@ -588,6 +592,7 @@ def quickselectsortAnalyis(k, inputs, ns, fun_type):
     klistfinal.append(xs3)
     klistfinal.append(xs4)
     randomn6 = convert(klistfinal, ns, f"Quick Select - {fun_type}")
+
     return randomn6
 
 
@@ -667,7 +672,6 @@ def partialHeapSortAnalysis(k, inputs, ns):
     klistfinal.append(xs4)
     randomn5 = convert(klistfinal, ns, "Partial Heap-Sort")
     return randomn5
-
 
 def generalComparision(k, inputs, ns):
     ax = []
